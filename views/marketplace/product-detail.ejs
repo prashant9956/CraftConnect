@@ -1,0 +1,155 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="product-detail-page">
+
+    <div class="product-detail-container">
+
+        <!-- BACK -->
+        <a href="/marketplace" class="back-marketplace">
+            ← Back to Marketplace
+        </a>
+
+
+        <!-- PRODUCT -->
+        <div class="product-detail-card">
+
+            <!-- IMAGE -->
+            <div class="product-detail-image-section">
+
+                <% if (product.image) { %>
+
+                    <img
+                        src="/uploads/<%= product.image %>"
+                        alt="<%= product.productName %>"
+                        class="product-detail-image"
+                    >
+
+                <% } else { %>
+
+                    <div class="product-detail-placeholder">
+                        ✦
+                    </div>
+
+                <% } %>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+            <div class="product-detail-info">
+
+                <span class="detail-category">
+                    <%= product.category %>
+                </span>
+
+
+                <h1>
+                    <%= product.productName %>
+                </h1>
+
+
+                <div class="detail-price">
+                    ₹<%= Number(product.price || 0).toLocaleString("en-IN") %>
+                </div>
+
+
+                <% if (product.material) { %>
+
+                    <div class="detail-info-row">
+
+                        <span class="detail-label">
+                            Material
+                        </span>
+
+                        <span class="detail-value">
+                            <%= product.material %>
+                        </span>
+
+                    </div>
+
+                <% } %>
+
+
+                <div class="detail-divider"></div>
+
+
+                <% if (product.description) { %>
+
+                    <div class="detail-description">
+
+                        <h3>
+                            About this product
+                        </h3>
+
+                        <p>
+                            <%= product.description %>
+                        </p>
+
+                    </div>
+
+                <% } %>
+
+
+                <% if (product.tags && product.tags.length > 0) { %>
+
+                    <div class="detail-tags">
+
+                        <h3>
+                            Tags
+                        </h3>
+
+                        <div class="tags-list">
+
+                            <% product.tags.forEach(tag => { %>
+
+                                <span class="detail-tag">
+                                    #<%= tag %>
+                                </span>
+
+                            <% }) %>
+
+                        </div>
+
+                    </div>
+
+                <% } %>
+
+
+                <!-- ACTIONS -->
+                <div class="detail-actions">
+
+                    <form
+                        action="/cart/add/<%= product._id %>"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="add-cart-btn"
+                        >
+                            🛒 Add to Cart
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- TRUST NOTE -->
+                <div class="product-trust-note">
+
+                    <span>✦</span>
+
+                    <p>
+                        Supporting local artisans through CraftConnect.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

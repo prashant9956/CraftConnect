@@ -1,0 +1,168 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="product-page">
+
+    <div class="product-header">
+        <h1>Add New Product</h1>
+        <p>Showcase your handmade product to customers.</p>
+    </div>
+
+    <form action="/artisan/products" method="POST" enctype="multipart/form-data">
+
+        <div class="product-form">
+
+            <!-- Product Image -->
+
+            <div class="form-section">
+
+                <h2>Product Image</h2>
+
+                <div class="image-upload">
+
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        required
+                    >
+
+                    <p>
+                        Upload a clear image of your handmade product.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Product Information -->
+
+            <div class="form-section">
+
+                <h2>Product Information</h2>
+
+                <label for="productName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    name="productName"
+                    placeholder="e.g. Handmade Wooden Elephant"
+                    required
+                >
+
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select id="category" name="category" required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Home Decor">
+                        Home Decor
+                    </option>
+
+                    <option value="Handicrafts">
+                        Handicrafts
+                    </option>
+
+                    <option value="Jewellery">
+                        Jewellery
+                    </option>
+
+                    <option value="Clothing">
+                        Clothing
+                    </option>
+
+                    <option value="Pottery">
+                        Pottery
+                    </option>
+
+                    <option value="Paintings">
+                        Paintings
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label for="material">
+                    Material
+                </label>
+
+                <input
+                    type="text"
+                    id="material"
+                    name="material"
+                    placeholder="e.g. Wood, Clay, Cotton"
+                >
+
+
+                <label for="price">
+                    Price (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    placeholder="Enter price"
+                    min="1"
+                    required
+                >
+
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                    placeholder="Describe your product..."
+                ></textarea>
+
+
+                <label for="tags">
+                    Tags
+                </label>
+
+                <input
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    placeholder="handmade, traditional, wooden"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a href="/artisan/dashboard" class="cancel-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Product
+            </button>
+
+        </div>
+
+    </form>
+
+</div> 
+
+

@@ -1,0 +1,241 @@
+<% layout("layouts/boilerplate") %>
+<div class="marketplace-page">
+
+    <!-- HERO -->
+    <section class="marketplace-hero">
+
+        <div class="marketplace-hero-content">
+
+            <span class="marketplace-badge">
+                ✦ CraftConnect Marketplace
+            </span>
+
+            <h1>
+                Discover <span>Beautiful Handmade Crafts</span>
+            </h1>
+
+            <p>
+                Explore unique products created by local artisans
+                and discover the stories behind every craft.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- SEARCH + FILTER -->
+    <section class="marketplace-controls">
+
+        <form action="/marketplace" method="GET" class="marketplace-search-form">
+
+            <div class="marketplace-search">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search handmade products..."
+                    value="<%= search %>"
+                >
+
+            </div>
+
+
+            <div class="marketplace-category">
+
+                <select name="category">
+
+                    <option value="All"
+                        <%= category === "All" ? "selected" : "" %>>
+                        All Categories
+                    </option>
+
+                    <option value="Home Decor"
+                        <%= category === "Home Decor" ? "selected" : "" %>>
+                        Home Decor
+                    </option>
+
+                    <option value="Handicrafts"
+                        <%= category === "Handicrafts" ? "selected" : "" %>>
+                        Handicrafts
+                    </option>
+
+                    <option value="Jewellery"
+                        <%= category === "Jewellery" ? "selected" : "" %>>
+                        Jewellery
+                    </option>
+
+                    <option value="Clothing"
+                        <%= category === "Clothing" ? "selected" : "" %>>
+                        Clothing
+                    </option>
+
+                    <option value="Pottery"
+                        <%= category === "Pottery" ? "selected" : "" %>>
+                        Pottery
+                    </option>
+
+                    <option value="Paintings"
+                        <%= category === "Paintings" ? "selected" : "" %>>
+                        Paintings
+                    </option>
+
+                    <option value="Other"
+                        <%= category === "Other" ? "selected" : "" %>>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button type="submit" class="marketplace-search-btn">
+                Search
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+    <main class="marketplace-container">
+
+        <div class="marketplace-heading">
+
+            <div>
+                <span class="section-label">EXPLORE</span>
+
+                <h2>
+                    Handmade Products
+                </h2>
+            </div>
+
+            <p>
+                <%= products.length %>
+                product<%= products.length === 1 ? "" : "s" %> found
+            </p>
+
+        </div>
+
+
+        <% if (products.length === 0) { %>
+
+            <div class="empty-marketplace">
+
+                <div class="empty-icon">
+                    ✦
+                </div>
+
+                <h3>No products found</h3>
+
+                <p>
+                    Try another search or category.
+                </p>
+
+                <a href="/marketplace" class="clear-filter-btn">
+                    View All Products
+                </a>
+
+            </div>
+
+        <% } else { %>
+
+
+            <div class="product-grid">
+
+                <% products.forEach(product => { %>
+
+                    <article class="marketplace-product-card">
+
+                        <div class="product-image-wrapper">
+
+                            <% if (product.image) { %>
+
+                                <img
+                                    src="/uploads/<%= product.image %>"
+                                    alt="<%= product.productName %>"
+                                    class="marketplace-product-image"
+                                >
+
+                            <% } else { %>
+
+                                <div class="product-image-placeholder">
+                                    <span>✦</span>
+                                </div>
+
+                            <% } %>
+
+
+                            <span class="product-category-badge">
+                                <%= product.category %>
+                            </span>
+
+                        </div>
+
+
+                        <div class="product-card-content">
+
+                            <h3>
+                                <%= product.productName %>
+                            </h3>
+
+
+                            <% if (product.material) { %>
+
+                                <p class="product-material">
+                                    <span>Material:</span>
+                                    <%= product.material %>
+                                </p>
+
+                            <% } %>
+
+
+                            <% if (product.description) { %>
+
+                                <p class="product-description">
+
+                                    <%= product.description.length > 100
+                                        ? product.description.substring(0, 100) + "..."
+                                        : product.description
+                                    %>
+
+                                </p>
+
+                            <% } %>
+
+
+                            <div class="product-card-bottom">
+
+                                <div class="product-price">
+
+                                    ₹<%= Number(product.price || 0).toLocaleString("en-IN") %>
+
+                                </div>
+
+
+                                <a
+                                    href="/marketplace/product/<%= product._id %>"
+                                    class="view-product-btn"
+                                >
+                                    View Product →
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </main>
+
+</div>

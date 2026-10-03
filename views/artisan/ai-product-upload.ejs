@@ -1,0 +1,753 @@
+```html
+<% layout("layouts/boilerplate") %>
+
+<div class="ai-page">
+
+    <!-- PAGE HEADER -->
+    <div class="ai-page-header">
+
+        <div class="ai-badge">
+            ✨ AI POWERED
+        </div>
+
+        <h1>Create your product with AI</h1>
+
+        <p>
+            Upload a photo of your handmade product and let AI
+            generate the product details for you.
+        </p>
+
+    </div>
+
+
+    <!-- AI WORKSPACE -->
+    <div class="ai-workspace">
+
+        <!-- IMAGE UPLOAD CARD -->
+        <div class="ai-card image-card">
+
+            <div class="card-heading">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div>
+                    <h2>Product Image</h2>
+
+                    <p>
+                        Upload a clear photo of your product.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- DROPZONE -->
+            <div class="ai-dropzone" id="dropzone">
+
+                <div class="drop-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Drop your product image here
+                </h3>
+
+                <p>
+                    JPG, PNG or WEBP · Clear product photos work best
+                </p>
+
+                <input
+                    type="file"
+                    id="aiProductImage"
+                    accept="image/*"
+                >
+
+                <label
+                    for="aiProductImage"
+                    class="choose-image-btn"
+                >
+                    Choose Image
+                </label>
+
+            </div>
+
+
+            <!-- IMAGE PREVIEW -->
+            <div
+                id="imagePreview"
+                class="ai-preview"
+                style="display: none;"
+            >
+
+                <img
+                    id="previewImage"
+                    src=""
+                    alt="Product Preview"
+                >
+
+                <button
+                    type="button"
+                    id="removeImage"
+                    class="remove-image-btn"
+                >
+                    Remove Image
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AI ASSISTANT CARD -->
+        <div class="ai-card ai-assistant-card">
+
+            <div class="card-heading">
+
+                <div class="step-number ai-step">
+                    02
+                </div>
+
+                <div>
+                    <h2>AI Assistant</h2>
+
+                    <p>
+                        Turn your image into product details.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="ai-assistant-content">
+
+                <div class="ai-sparkle">
+                    ✨
+                </div>
+
+                <h3>
+                    Let AI describe your craft
+                </h3>
+
+                <p>
+                    AI will identify the product, material,
+                    category and create a customer-friendly
+                    description.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="generateAI"
+                    class="generate-ai-btn"
+                    disabled
+                >
+                    ✨ Generate Product Details
+                </button>
+
+
+                <!-- LOADING -->
+                <div
+                    id="aiLoading"
+                    class="ai-loading"
+                    style="display: none;"
+                >
+
+                    <div class="loading-spinner"></div>
+
+                    <span>
+                        AI is analyzing your product...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- AI RESULTS -->
+    <div
+        id="aiResults"
+        class="ai-card ai-results-card"
+        style="display: none;"
+    >
+
+        <div class="results-header">
+
+            <div>
+
+                <div class="ai-badge small">
+                    AI SUGGESTIONS
+                </div>
+
+                <h2>
+                    Review your product details
+                </h2>
+
+                <p>
+                    AI generated these details from your image.
+                    You can edit anything before saving.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FORM GRID -->
+        <div class="ai-form-grid">
+
+            <!-- PRODUCT NAME -->
+            <div class="form-group">
+
+                <label for="aiProductName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="aiProductName"
+                    placeholder="Product name"
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+            <div class="form-group">
+
+                <label for="aiCategory">
+                    Category
+                </label>
+
+                <select id="aiCategory">
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Home Decor">
+                        Home Decor
+                    </option>
+
+                    <option value="Handicrafts">
+                        Handicrafts
+                    </option>
+
+                    <option value="Jewellery">
+                        Jewellery
+                    </option>
+
+                    <option value="Clothing">
+                        Clothing
+                    </option>
+
+                    <option value="Pottery">
+                        Pottery
+                    </option>
+
+                    <option value="Paintings">
+                        Paintings
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- MATERIAL -->
+            <div class="form-group">
+
+                <label for="aiMaterial">
+                    Material
+                </label>
+
+                <input
+                    type="text"
+                    id="aiMaterial"
+                    placeholder="e.g. Wood, Clay, Cotton"
+                >
+
+            </div>
+
+
+            <!-- TAGS -->
+            <div class="form-group">
+
+                <label for="aiTags">
+                    Tags
+                </label>
+
+                <input
+                    type="text"
+                    id="aiTags"
+                    placeholder="handmade, traditional, wooden"
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DESCRIPTION -->
+        <div class="form-group">
+
+            <label for="aiDescription">
+                Product Description
+            </label>
+
+            <textarea
+                id="aiDescription"
+                rows="6"
+                placeholder="AI generated description"
+            ></textarea>
+
+        </div>
+
+
+
+        <!-- ACTION BUTTONS -->
+        <div class="ai-actions">
+
+            <button
+                type="button"
+                class="secondary-btn"
+                id="regenerateAI"
+            >
+                ↻ Regenerate
+            </button>
+
+            <button
+                type="button"
+                class="save-ai-btn"
+                id="saveAIProduct"
+            >
+                Save Product →
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    const fileInput = document.getElementById("aiProductImage");
+    const dropzone = document.getElementById("dropzone");
+
+    const imagePreview = document.getElementById("imagePreview");
+    const previewImage = document.getElementById("previewImage");
+    const removeImage = document.getElementById("removeImage");
+
+    const generateAI = document.getElementById("generateAI");
+    const aiLoading = document.getElementById("aiLoading");
+    const aiResults = document.getElementById("aiResults");
+
+    const aiProductName = document.getElementById("aiProductName");
+    const aiCategory = document.getElementById("aiCategory");
+    const aiMaterial = document.getElementById("aiMaterial");
+    const aiTags = document.getElementById("aiTags");
+    const aiDescription = document.getElementById("aiDescription");
+
+    const saveAIProduct = document.getElementById("saveAIProduct");
+    const regenerateAI = document.getElementById("regenerateAI");
+
+    let selectedFile = null;
+
+
+    // ==========================================
+    // FILE SELECTION
+    // ==========================================
+
+    fileInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        handleFile(file);
+
+    });
+
+
+    // ==========================================
+    // HANDLE FILE
+    // ==========================================
+
+    function handleFile(file) {
+
+        if (!file.type.startsWith("image/")) {
+
+            alert("Please select an image file.");
+
+            return;
+
+        }
+
+        selectedFile = file;
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+            previewImage.src = event.target.result;
+
+            imagePreview.style.display = "block";
+
+            dropzone.style.display = "none";
+
+            generateAI.disabled = false;
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+
+    // ==========================================
+    // DRAG & DROP
+    // ==========================================
+
+    dropzone.addEventListener("dragover", function (e) {
+
+        e.preventDefault();
+
+        dropzone.classList.add("dragging");
+
+    });
+
+
+    dropzone.addEventListener("dragleave", function () {
+
+        dropzone.classList.remove("dragging");
+
+    });
+
+
+    dropzone.addEventListener("drop", function (e) {
+
+        e.preventDefault();
+
+        dropzone.classList.remove("dragging");
+
+        const file = e.dataTransfer.files[0];
+
+        if (file) {
+
+            handleFile(file);
+
+        }
+
+    });
+
+
+    // ==========================================
+    // REMOVE IMAGE
+    // ==========================================
+
+    removeImage.addEventListener("click", function () {
+
+        selectedFile = null;
+
+        fileInput.value = "";
+
+        previewImage.src = "";
+
+        imagePreview.style.display = "none";
+
+        dropzone.style.display = "block";
+
+        generateAI.disabled = true;
+
+        aiResults.style.display = "none";
+
+    });
+
+
+    // ==========================================
+    // REAL GEMINI AI
+    // ==========================================
+
+    generateAI.addEventListener("click", async function () {
+
+        if (!selectedFile) {
+
+            alert("Please upload a product image first.");
+
+            return;
+
+        }
+
+
+        // Hide old results
+        aiResults.style.display = "none";
+
+
+        // Show loading
+        generateAI.disabled = true;
+
+        aiLoading.style.display = "flex";
+
+
+        try {
+
+            const formData = new FormData();
+
+            formData.append(
+                "image",
+                selectedFile
+            );
+
+
+            console.log(
+                "Sending image to Gemini..."
+            );
+
+
+            const response = await fetch(
+                "/artisan/products/ai-generate",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+            const result = await response.json();
+
+
+            console.log(
+                "Gemini response:",
+                result
+            );
+
+
+            if (!response.ok || !result.success) {
+
+                throw new Error(
+                    result.message ||
+                    "AI analysis failed."
+                );
+
+            }
+
+
+            // ==========================================
+            // PUT GEMINI DATA INTO FORM
+            // ==========================================
+
+            aiProductName.value =
+                result.data.productName || "";
+
+            aiCategory.value =
+                result.data.category || "";
+
+            aiMaterial.value =
+                result.data.material || "";
+
+            aiTags.value =
+                result.data.tags || "";
+
+            aiDescription.value =
+                result.data.description || "";
+
+
+            // Show results
+            aiResults.style.display = "block";
+
+
+            // Smooth scroll to results
+
+            aiResults.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Gemini error:",
+                error
+            );
+
+
+            alert(
+                "AI analysis failed: " +
+                error.message
+            );
+
+        } finally {
+
+            aiLoading.style.display = "none";
+
+            generateAI.disabled = false;
+
+        }
+
+    });
+
+
+    // ==========================================
+    // REGENERATE AI
+    // ==========================================
+
+    regenerateAI.addEventListener(
+        "click",
+        function () {
+
+            if (!selectedFile) {
+
+                alert(
+                    "Please upload an image first."
+                );
+
+                return;
+
+            }
+
+            generateAI.click();
+
+        }
+    );
+
+
+    // ==========================================
+    // SAVE AI PRODUCT
+    // ==========================================
+
+    saveAIProduct.addEventListener(
+        "click",
+        async function () {
+
+            if (!selectedFile) {
+
+                alert(
+                    "Please upload a product image."
+                );
+
+                return;
+
+            }
+
+
+            const price = prompt(
+                "Enter product price (₹):"
+            );
+
+
+            if (!price) {
+
+                return;
+
+            }
+
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "image",
+                selectedFile
+            );
+
+            formData.append(
+                "productName",
+                aiProductName.value
+            );
+
+            formData.append(
+                "category",
+                aiCategory.value
+            );
+
+            formData.append(
+                "material",
+                aiMaterial.value
+            );
+
+            formData.append(
+                "price",
+                price
+            );
+
+            formData.append(
+                "description",
+                aiDescription.value
+            );
+
+            formData.append(
+                "tags",
+                aiTags.value
+            );
+
+
+            try {
+
+                saveAIProduct.disabled = true;
+
+                saveAIProduct.innerText =
+                    "Saving...";
+
+
+                const response =
+                    await fetch(
+                        "/artisan/products",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Product could not be saved."
+                    );
+
+                }
+
+
+                // Redirect to dashboard
+
+                window.location.href =
+                    "/artisan/dashboard";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Could not save product: " +
+                    error.message
+                );
+
+
+                saveAIProduct.disabled = false;
+
+                saveAIProduct.innerText =
+                    "Save Product";
+
+            }
+
+        }
+    );
+
+</script>

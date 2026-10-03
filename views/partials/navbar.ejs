@@ -1,0 +1,106 @@
+<nav class="navbar">
+
+    <!-- BRAND -->
+    <div class="navbar-brand">
+        <a href="/">
+            CraftConnect
+        </a>
+    </div>
+
+
+    <!-- MAIN NAVIGATION -->
+    <div class="navbar-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/marketplace">
+            Marketplace
+        </a>
+
+
+        <% if (currentUser && currentUser.role === "artisan") { %>
+
+            <a href="/artisan/dashboard">
+                Artisan Dashboard
+            </a>
+
+        <% } %>
+
+
+        <% if (currentUser && currentUser.role === "admin") { %>
+
+            <a href="/admin">
+                Admin
+            </a>
+
+        <% } %>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+    <div class="navbar-auth">
+
+        <% if (currentUser) { %>
+
+            <!-- USER -->
+            <span class="navbar-user">
+                Hi,
+                <strong>
+                    <%= currentUser.name %>
+                </strong>
+            </span>
+
+
+            <!-- CART -->
+            <a
+                href="/cart"
+                class="navbar-cart"
+                style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 9px 16px;
+                    background: #8b5e3c;
+                    color: white;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 700;
+                    margin-left: 10px;
+                "
+            >
+                🛒 Cart
+            </a>
+
+
+            <!-- LOGOUT -->
+            <a
+                href="/logout"
+                class="logout-btn"
+            >
+                Logout
+            </a>
+
+
+        <% } else { %>
+
+            <!-- LOGGED OUT -->
+
+            <a href="/login">
+                Login
+            </a>
+
+            <a
+                href="/signup"
+                class="signup-btn"
+            >
+                Sign Up
+            </a>
+
+        <% } %>
+
+    </div>
+
+</nav>

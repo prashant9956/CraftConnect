@@ -1,0 +1,122 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <span class="auth-eyebrow">
+                CRAFTCONNECT
+            </span>
+
+            <h1>Create Account</h1>
+
+            <p>
+                Join CraftConnect and become part of the
+                handmade marketplace.
+            </p>
+        </div>
+
+
+        <form action="/signup" method="POST">
+
+            <div class="auth-form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="auth-form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="auth-form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <div class="auth-form-group">
+
+                <label for="role">
+                    I want to join as
+                </label>
+
+                <select
+                    id="role"
+                    name="role"
+                    required
+                >
+
+                    <option value="buyer">
+                        Buyer
+                    </option>
+
+                    <option value="artisan">
+                        Artisan
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="auth-submit-btn"
+            >
+                Create Account →
+            </button>
+
+        </form>
+
+
+        <div class="auth-footer">
+
+            Already have an account?
+
+            <a href="/login">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

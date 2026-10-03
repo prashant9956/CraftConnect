@@ -1,0 +1,215 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="product-page">
+
+    <div class="product-header">
+        <h1>Edit Product</h1>
+        <p>Update your handmade product information.</p>
+    </div>
+
+
+    <form
+        action="/artisan/products/<%= product._id %>?_method=PUT"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <div class="product-form">
+
+            <!-- Current Image -->
+
+            <div class="form-section">
+
+                <h2>Product Image</h2>
+
+                <% if (product.image) { %>
+
+                    <div class="current-image">
+
+                        <img
+                            src="/uploads/<%= product.image %>"
+                            alt="<%= product.productName %>"
+                        >
+
+                    </div>
+
+                <% } %>
+
+
+                <div class="image-upload">
+
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                    >
+
+                    <p>
+                        Leave empty if you don't want to change the image.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Product Information -->
+
+            <div class="form-section">
+
+                <h2>Product Information</h2>
+
+
+                <label for="productName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    name="productName"
+                    value="<%= product.productName %>"
+                    required
+                >
+
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option
+                        value="Home Decor"
+                        <%= product.category === "Home Decor" ? "selected" : "" %>
+                    >
+                        Home Decor
+                    </option>
+
+                    <option
+                        value="Handicrafts"
+                        <%= product.category === "Handicrafts" ? "selected" : "" %>
+                    >
+                        Handicrafts
+                    </option>
+
+                    <option
+                        value="Jewellery"
+                        <%= product.category === "Jewellery" ? "selected" : "" %>
+                    >
+                        Jewellery
+                    </option>
+
+                    <option
+                        value="Clothing"
+                        <%= product.category === "Clothing" ? "selected" : "" %>
+                    >
+                        Clothing
+                    </option>
+
+                    <option
+                        value="Pottery"
+                        <%= product.category === "Pottery" ? "selected" : "" %>
+                    >
+                        Pottery
+                    </option>
+
+                    <option
+                        value="Paintings"
+                        <%= product.category === "Paintings" ? "selected" : "" %>
+                    >
+                        Paintings
+                    </option>
+
+                    <option
+                        value="Other"
+                        <%= product.category === "Other" ? "selected" : "" %>
+                    >
+                        Other
+                    </option>
+
+                </select>
+
+
+                <label for="material">
+                    Material
+                </label>
+
+                <input
+                    type="text"
+                    id="material"
+                    name="material"
+                    value="<%= product.material || "" %>"
+                >
+
+
+                <label for="price">
+                    Price (₹)
+                </label>
+
+                <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value="<%= product.price %>"
+                    min="1"
+                    required
+                >
+
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="6"
+                ><%= product.description || "" %></textarea>
+
+
+                <label for="tags">
+                    Tags
+                </label>
+
+                <input
+                    type="text"
+                    id="tags"
+                    name="tags"
+                    value="<%= product.tags ? product.tags.join(", ") : "" %>"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a
+                href="/artisan/dashboard"
+                class="cancel-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Update Product
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
