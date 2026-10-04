@@ -1,142 +1,60 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="cart-page">
+<section class="hero">
+    <div class="hero-content">
 
-    <div class="cart-header">
-        <h1>Your Cart</h1>
-        <p>Review your selected handmade products.</p>
-    </div>
+        <div class="hero-badge">
+            ✦ AI-Powered Artisan Marketplace
+        </div>
 
-    <% if (!cart.items || cart.items.length === 0) { %>
+        <h1>
+            Empowering Artisans,
+            <span>Connecting Communities.</span>
+        </h1>
 
-        <div class="empty-cart">
+        <p>
+            CraftConnect helps local artisans showcase their
+            handmade products, use AI-powered product listing,
+            and reach customers through a digital marketplace.
+        </p>
 
-            <div class="empty-cart-icon">🛒</div>
-
-            <h2>Your cart is empty</h2>
-
-            <p>
-                Discover beautiful handmade products from local artisans.
-            </p>
-
+        <div class="hero-buttons">
             <a href="/marketplace" class="primary-btn">
-                Explore Marketplace
+                Explore Marketplace →
             </a>
 
+            <a href="/signup" class="secondary-btn">
+                Become an Artisan
+            </a>
         </div>
 
-    <% } else { %>
+        <div class="hero-features">
 
-        <div class="cart-layout">
-
-            <div class="cart-items">
-
-                <% cart.items.forEach(item => { %>
-
-                    <div class="cart-item">
-
-                        <div class="cart-item-image">
-
-                            <% if (item.product.image) { %>
-
-                                <img
-                                    src="/uploads/<%= item.product.image %>"
-                                    alt="<%= item.product.productName %>"
-                                >
-
-                            <% } else { %>
-
-                                <div class="no-cart-image">
-                                    No Image
-                                </div>
-
-                            <% } %>
-
-                        </div>
-
-
-                        <div class="cart-item-info">
-
-                            <h3>
-                                <%= item.product.productName %>
-                            </h3>
-
-                            <p>
-                                <%= item.product.category %>
-                            </p>
-
-                            <strong>
-                                ₹<%= item.product.price %>
-                            </strong>
-
-                            <span>
-                                Quantity: <%= item.quantity %>
-                            </span>
-
-                        </div>
-
-
-                        <div class="cart-item-actions">
-
-                            <form
-                                action="/cart/remove/<%= item.product._id %>"
-                                method="POST"
-                            >
-
-                                <button
-                                    type="submit"
-                                    class="delete-btn"
-                                >
-                                    Remove
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                <% }) %>
-
+            <div class="hero-feature">
+                <div class="feature-icon">🤖</div>
+                <div>
+                    <strong>AI-Powered</strong>
+                    <span>Smart product listings</span>
+                </div>
             </div>
 
-
-            <div class="cart-summary">
-
-                <h2>Order Summary</h2>
-
-                <div class="summary-row">
-
-                    <span>Items</span>
-
-                    <strong>
-                        <%= cart.items.length %>
-                    </strong>
-
+            <div class="hero-feature">
+                <div class="feature-icon">🛍️</div>
+                <div>
+                    <strong>Unique Crafts</strong>
+                    <span>Discover handmade products</span>
                 </div>
+            </div>
 
-                <div class="summary-row">
-
-                    <span>Total</span>
-
-                    <strong>
-                        ₹<%= cart.items.reduce(
-                            (total, item) =>
-                            total + (item.product.price * item.quantity),
-                            0
-                        ) %>
-                    </strong>
-
+            <div class="hero-feature">
+                <div class="feature-icon">🤝</div>
+                <div>
+                    <strong>Support Artisans</strong>
+                    <span>Connect directly with creators</span>
                 </div>
-
-                <button class="checkout-btn">
-                    Proceed to Checkout
-                </button>
-
             </div>
 
         </div>
 
-    <% } %>
-
-</div>
+    </div>
+</section>

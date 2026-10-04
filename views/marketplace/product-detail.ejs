@@ -4,16 +4,17 @@
 
     <div class="product-detail-container">
 
-        <!-- BACK -->
+        <!-- BACK TO MARKETPLACE -->
         <a href="/marketplace" class="back-marketplace">
-            ← Back to Marketplace
+            <span>←</span>
+            Back to Marketplace
         </a>
 
 
-        <!-- PRODUCT -->
+        <!-- PRODUCT DETAIL CARD -->
         <div class="product-detail-card">
 
-            <!-- IMAGE -->
+            <!-- ================= IMAGE ================= -->
             <div class="product-detail-image-section">
 
                 <% if (product.image) { %>
@@ -27,43 +28,74 @@
                 <% } else { %>
 
                     <div class="product-detail-placeholder">
-                        ✦
+                        <span>✦</span>
+                        <p>Handmade Craft</p>
                     </div>
 
                 <% } %>
 
+
+                <!-- IMAGE LABEL -->
+                <div class="detail-image-label">
+                    ✦ Handmade Product
+                </div>
+
             </div>
 
 
-            <!-- INFORMATION -->
+            <!-- ================= INFORMATION ================= -->
             <div class="product-detail-info">
 
+                <!-- CATEGORY -->
                 <span class="detail-category">
                     <%= product.category %>
                 </span>
 
 
+                <!-- PRODUCT NAME -->
                 <h1>
                     <%= product.productName %>
                 </h1>
 
 
-                <div class="detail-price">
-                    ₹<%= Number(product.price || 0).toLocaleString("en-IN") %>
+                <!-- SHORT INTRO -->
+                <p class="detail-intro">
+                    A unique handmade creation crafted by a local artisan.
+                </p>
+
+
+                <!-- PRICE -->
+                <div class="detail-price-section">
+
+                    <span class="detail-price-label">
+                        Price
+                    </span>
+
+                    <div class="detail-price">
+                        ₹<%= Number(product.price || 0).toLocaleString("en-IN") %>
+                    </div>
+
                 </div>
 
 
+                <!-- MATERIAL -->
                 <% if (product.material) { %>
 
                     <div class="detail-info-row">
 
-                        <span class="detail-label">
-                            Material
-                        </span>
+                        <div class="detail-info-icon">
+                            ◈
+                        </div>
 
-                        <span class="detail-value">
-                            <%= product.material %>
-                        </span>
+                        <div>
+                            <span class="detail-label">
+                                Material
+                            </span>
+
+                            <span class="detail-value">
+                                <%= product.material %>
+                            </span>
+                        </div>
 
                     </div>
 
@@ -73,6 +105,7 @@
                 <div class="detail-divider"></div>
 
 
+                <!-- DESCRIPTION -->
                 <% if (product.description) { %>
 
                     <div class="detail-description">
@@ -90,12 +123,13 @@
                 <% } %>
 
 
+                <!-- TAGS -->
                 <% if (product.tags && product.tags.length > 0) { %>
 
                     <div class="detail-tags">
 
                         <h3>
-                            Tags
+                            Product Tags
                         </h3>
 
                         <div class="tags-list">
@@ -127,10 +161,42 @@
                             type="submit"
                             class="add-cart-btn"
                         >
-                            🛒 Add to Cart
+                            <span>🛒</span>
+                            Add to Cart
+                            <span class="cart-arrow">→</span>
                         </button>
 
                     </form>
+
+                </div>
+
+
+                <!-- TRUST FEATURES -->
+                <div class="product-trust-grid">
+
+                    <div class="trust-item">
+                        <span>✦</span>
+                        <div>
+                            <strong>Handmade</strong>
+                            <small>Unique artisan craft</small>
+                        </div>
+                    </div>
+
+                    <div class="trust-item">
+                        <span>🤝</span>
+                        <div>
+                            <strong>Support Local</strong>
+                            <small>Direct artisan support</small>
+                        </div>
+                    </div>
+
+                    <div class="trust-item">
+                        <span>✓</span>
+                        <div>
+                            <strong>CraftConnect</strong>
+                            <small>Trusted marketplace</small>
+                        </div>
+                    </div>
 
                 </div>
 
