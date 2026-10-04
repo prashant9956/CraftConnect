@@ -58,7 +58,9 @@ app.use("/admin", adminRouter);
 // MongoDB Connection
 // --------------------
 
+// Replace your current MongoDB and Server code at the bottom with this:
 
+const PORT = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL;
 
 mongoose
@@ -67,14 +69,18 @@ mongoose
         console.log("=================================");
         console.log("MongoDB Atlas CONNECTED");
         console.log("Database:", mongoose.connection.name);
-        console.log("Host:", mongoose.connection.host);
         console.log("=================================");
+        
+        // ONLY start the server if DB connection is successful
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`CraftConnect running on port ${PORT}`);
+        });
     })
     .catch((err) => {
         console.error("MongoDB Atlas CONNECTION ERROR:");
         console.error(err);
+        process.exit(1); // Tells the deployment platform the app crashed intentionally
     });
-// --------------------
 // Home Route
 // --------------------
 
@@ -91,7 +97,7 @@ app.get("/", (req, res) => {
 // app.listen(PORT, () => {
 //     console.log(`CraftConnect running on port ${PORT}`);
 // });
-const PORT = process.env.PORT || 8080;
+// const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`CraftConnect running on port ${PORT}`);
