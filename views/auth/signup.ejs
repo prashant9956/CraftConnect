@@ -4,116 +4,193 @@
 
     <div class="auth-card">
 
-        <div class="auth-header">
-            <span class="auth-eyebrow">
-                CRAFTCONNECT
-            </span>
+        <!-- SIGNUP SIDE -->
+        <div class="auth-form-side">
 
-            <h1>Create Account</h1>
+            <div class="auth-brand-mobile">
+                CRAFT<span>CONNECT</span>
+            </div>
 
-            <p>
-                Join CraftConnect and become part of the
-                handmade marketplace.
-            </p>
+            <div class="auth-header">
+
+                <span class="auth-eyebrow">
+                    CRAFTCONNECT
+                </span>
+
+                <h1>Create Account</h1>
+
+                <p>
+                    Join our community of artisans and craft lovers.
+                </p>
+
+            </div>
+
+
+            <form action="/signup" method="POST">
+
+                <!-- NAME -->
+                <div class="auth-form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">◉</span>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="auth-form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="auth-form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            minlength="6"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ROLE -->
+                <div class="auth-form-group">
+
+                    <label for="role">
+                        I want to join as
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">◆</span>
+
+                        <select
+                            id="role"
+                            name="role"
+                            required
+                        >
+
+                            <option value="buyer">
+                                Buyer
+                            </option>
+
+                            <option value="artisan">
+                                Artisan
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SIGNUP BUTTON -->
+                <button
+                    type="submit"
+                    class="auth-submit-btn"
+                >
+                    <span>Create Account</span>
+                    <span class="auth-arrow">→</span>
+                </button>
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </div>
+
         </div>
 
 
-        <form action="/signup" method="POST">
+        <!-- WELCOME SIDE -->
+        <div class="auth-welcome-side">
 
-            <div class="auth-form-group">
+            <div class="welcome-content">
 
-                <label for="name">
-                    Full Name
-                </label>
+                <div class="welcome-logo">
+                    ✦
+                </div>
 
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter your name"
-                    required
-                >
+                <span class="welcome-small">
+                    WELCOME TO
+                </span>
 
-            </div>
+                <h2>
+                    Craft.
+                    <br>
+                    Connect.
+                    <br>
+                    Create.
+                </h2>
 
+                <p>
+                    Build your presence, showcase your craft
+                    and reach customers through CraftConnect.
+                </p>
 
-            <div class="auth-form-group">
+                <div class="welcome-line"></div>
 
-                <label for="email">
-                    Email Address
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    required
-                >
-
-            </div>
-
-
-            <div class="auth-form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Create a password"
-                    minlength="6"
-                    required
-                >
+                <span class="welcome-tag">
+                    YOUR CRAFT DESERVES TO BE DISCOVERED
+                </span>
 
             </div>
-
-
-            <div class="auth-form-group">
-
-                <label for="role">
-                    I want to join as
-                </label>
-
-                <select
-                    id="role"
-                    name="role"
-                    required
-                >
-
-                    <option value="buyer">
-                        Buyer
-                    </option>
-
-                    <option value="artisan">
-                        Artisan
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="auth-submit-btn"
-            >
-                Create Account →
-            </button>
-
-        </form>
-
-
-        <div class="auth-footer">
-
-            Already have an account?
-
-            <a href="/login">
-                Login
-            </a>
 
         </div>
 

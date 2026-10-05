@@ -1,15 +1,30 @@
 const express = require("express");
 const Product = require("../models/product");
 const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
 
 const { GoogleGenAI, Type } = require("@google/genai");
-
 const { isArtisan } = require("../middleware/auth");
+
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const router = express.Router();
 
+// ========================================
+// CLOUDINARY CONFIGURATION
+// ========================================
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+console.log("Cloudinary config:", {
+    cloud_name: !!process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: !!process.env.CLOUDINARY_API_KEY,
+    api_secret: !!process.env.CLOUDINARY_API_SECRET
+});
 
 // ========================================
 // GEMINI AI
@@ -19,94 +34,75 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-
-// ========================================
-// NORMAL IMAGE UPLOAD
-// ========================================
-
-const upload = multer({
-    dest: "uploads/"
-});
-
-
 // ========================================
 // AI IMAGE UPLOAD
 // ========================================
 
 const aiUpload = multer({
     storage: multer.memoryStorage(),
-
     limits: {
         fileSize: 10 * 1024 * 1024
     }
 });
 
+// ========================================
+// CLOUDINARY STORAGE
+// ========================================
+
+const cloudinaryStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+
+    params: {
+        folder: "craftconnect/products",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"]
+    }
+});
+
+const cloudinaryUpload = multer({
+    storage: cloudinaryStorage,
+    limits: {
+        fileSize: 10 * 1024 * 1024
+    }
+});
 
 // ========================================
 // ARTISAN DASHBOARD
 // ========================================
 
-router.get(
-    "/dashboard",
-    isArtisan,
-    async (req, res) => {
+router.get("/dashboard", isArtisan, async (req, res) => {
+    try {
+        const products = await Product.find({
+            artisan: req.session.userId
+        }).sort({ createdAt: -1 });
 
-        try {
+        res.render("artisan/dashboard", {
+            products
+        });
 
-            // Only show products belonging
-            // to the logged-in artisan
+    } catch (err) {
+        console.log("Dashboard error:", err);
 
-            const products = await Product.find({
-                artisan: req.session.userId
-            }).sort({
-                createdAt: -1
-            });
-
-            res.render("artisan/dashboard", {
-                products
-            });
-
-        } catch (err) {
-
-            console.log("Dashboard error:", err);
-
-            res.status(500).send(
-                "Something went wrong"
-            );
-        }
+        res.status(500).send(
+            "Something went wrong while loading dashboard."
+        );
     }
-);
-
+});
 
 // ========================================
 // ADD PRODUCT PAGE
 // ========================================
 
-router.get(
-    "/products/new",
-    isArtisan,
-    (req, res) => {
-
-        res.render("artisan/add-product");
-    }
-);
-
+router.get("/products/new", isArtisan, (req, res) => {
+    res.render("artisan/add-product");
+});
 
 // ========================================
 // AI PRODUCT UPLOAD PAGE
 // ========================================
 
-router.get(
-    "/products/ai-upload",
-    isArtisan,
-    (req, res) => {
-
-        res.render(
-            "artisan/ai-product-upload"
-        );
-    }
-);
-
+router.get("/products/ai-upload", isArtisan, (req, res) => {
+    res.render("artisan/ai-product-upload");
+});
 
 // ========================================
 // AI PRODUCT GENERATION
@@ -122,43 +118,34 @@ router.post(
         try {
 
             if (!req.file) {
-
                 return res.status(400).json({
                     success: false,
                     message: "Please upload an image."
                 });
             }
 
-
-            // Convert image to base64
-
             const base64Image =
                 req.file.buffer.toString("base64");
-
-
-            // Detect MIME type
 
             const mimeType =
                 req.file.mimetype || "image/jpeg";
 
+            const response =
+                await ai.models.generateContent({
 
-            // Gemini request
+                    model: "gemini-3.5-flash-lite",
 
-            const response = await ai.models.generateContent({
+                    contents: [
 
-                model: "gemini-3.5-flash-lite",
+                        {
+                            inlineData: {
+                                mimeType: mimeType,
+                                data: base64Image
+                            }
+                        },
 
-                contents: [
-
-                    {
-                        inlineData: {
-                            mimeType: mimeType,
-                            data: base64Image
-                        }
-                    },
-
-                    {
-                        text: `
+                        {
+                            text: `
 You are an AI assistant helping local artisans create product listings.
 
 Analyze the uploaded handmade product image.
@@ -194,77 +181,74 @@ Important rules:
 5. Tags should be useful for marketplace search.
 6. Human review will happen before publishing.
 `
-                    }
+                        }
 
-                ],
+                    ],
 
-                config: {
+                    config: {
 
-                    responseMimeType: "application/json",
+                        responseMimeType:
+                            "application/json",
 
-                    responseSchema: {
+                        responseSchema: {
 
-                        type: Type.OBJECT,
+                            type: Type.OBJECT,
 
-                        properties: {
+                            properties: {
 
-                            productName: {
-                                type: Type.STRING
-                            },
-
-                            category: {
-                                type: Type.STRING,
-                                enum: [
-                                    "Home Decor",
-                                    "Handicrafts",
-                                    "Jewellery",
-                                    "Clothing",
-                                    "Pottery",
-                                    "Paintings",
-                                    "Other"
-                                ]
-                            },
-
-                            material: {
-                                type: Type.STRING
-                            },
-
-                            description: {
-                                type: Type.STRING
-                            },
-
-                            tags: {
-                                type: Type.ARRAY,
-                                items: {
+                                productName: {
                                     type: Type.STRING
+                                },
+
+                                category: {
+                                    type: Type.STRING,
+
+                                    enum: [
+                                        "Home Decor",
+                                        "Handicrafts",
+                                        "Jewellery",
+                                        "Clothing",
+                                        "Pottery",
+                                        "Paintings",
+                                        "Other"
+                                    ]
+                                },
+
+                                material: {
+                                    type: Type.STRING
+                                },
+
+                                description: {
+                                    type: Type.STRING
+                                },
+
+                                tags: {
+                                    type: Type.ARRAY,
+
+                                    items: {
+                                        type: Type.STRING
+                                    }
                                 }
-                            }
 
-                        },
+                            },
 
-                        required: [
-                            "productName",
-                            "category",
-                            "material",
-                            "description",
-                            "tags"
-                        ]
+                            required: [
+                                "productName",
+                                "category",
+                                "material",
+                                "description",
+                                "tags"
+                            ]
+                        }
                     }
-                }
-            });
+                });
 
-
-            // Get AI response
-
-            const text =
-                response.text;
-
+            const text = response.text;
 
             console.log(
                 "Gemini AI response:",
                 text
             );
-
 
             let data;
 
@@ -285,29 +269,10 @@ Important rules:
                 });
             }
 
-
-            // Delete temporary uploaded image
-
-            try {
-
-                fs.unlinkSync(req.file.path);
-
-            } catch (fileError) {
-
-                console.log(
-                    "Temporary file cleanup error:",
-                    fileError
-                );
-            }
-
-
-            // Send AI result
-
-            res.json({
+            return res.json({
                 success: true,
-                data
+                data: data
             });
-
 
         } catch (err) {
 
@@ -316,28 +281,119 @@ Important rules:
                 err
             );
 
-            res.status(500).json({
+            console.log(
+                "AI error message:",
+                err.message
+            );
+
+            console.log(
+                "AI error stack:",
+                err.stack
+            );
+
+            return res.status(500).json({
                 success: false,
                 message:
+                    err.message ||
                     "AI product generation failed."
             });
         }
     }
 );
 
-
 // ========================================
 // CREATE PRODUCT
 // ========================================
+// IMPORTANT:
+// Cloudinary/Multer is wrapped manually here
+// so we can see the real upload error instead
+// of only getting [object Object].
 
 router.post(
     "/products",
+
     isArtisan,
-    upload.single("image"),
+
+    (req, res, next) => {
+
+        cloudinaryUpload.single("image")(
+            req,
+            res,
+
+            (err) => {
+
+                if (err) {
+
+                    console.log("");
+                    console.log("=================================");
+                    console.log("CLOUDINARY / MULTER ERROR");
+                    console.log("=================================");
+
+                    console.log(
+                        "Error:",
+                        err
+                    );
+
+                    console.log(
+                        "Error message:",
+                        err.message
+                    );
+
+                    console.log(
+                        "Error name:",
+                        err.name
+                    );
+
+                    console.log(
+                        "Error stack:",
+                        err.stack
+                    );
+
+                    console.log(
+                        "Error JSON:",
+                        JSON.stringify(
+                            err,
+                            Object.getOwnPropertyNames(err),
+                            2
+                        )
+                    );
+
+                    console.log(
+                        "================================="
+                    );
+
+                    return res.status(500).send(
+                        "Image upload failed: " +
+                        (
+                            err.message ||
+                            "Unknown Cloudinary error"
+                        )
+                    );
+                }
+
+                next();
+            }
+        );
+    },
 
     async (req, res) => {
 
         try {
+
+            console.log("");
+            console.log("=================================");
+            console.log("CREATE PRODUCT");
+            console.log("=================================");
+
+            console.log(
+                "Request body:",
+                req.body
+            );
+
+            console.log(
+                "Uploaded file:",
+                req.file
+            );
 
             const {
                 productName,
@@ -348,8 +404,9 @@ router.post(
                 tags
             } = req.body;
 
-
-            // Basic validation
+            // ========================================
+            // VALIDATION
+            // ========================================
 
             if (
                 !productName ||
@@ -362,26 +419,27 @@ router.post(
                 );
             }
 
-
-            // Create product
+            // ========================================
+            // PRODUCT DATA
+            // ========================================
 
             const newProduct = new Product({
 
-                // IMPORTANT:
-                // Link product to logged-in artisan
-
                 artisan: req.session.userId,
 
-                productName: productName.trim(),
+                productName:
+                    productName.trim(),
 
-                category: category.trim(),
+                category:
+                    category.trim(),
 
                 material:
                     material
                         ? material.trim()
                         : "",
 
-                price: Number(price),
+                price:
+                    Number(price),
 
                 description:
                     description
@@ -393,44 +451,98 @@ router.post(
                         ? tags
                             .split(",")
                             .map(tag => tag.trim())
-                            .filter(tag => tag !== "")
+                            .filter(
+                                tag => tag !== ""
+                            )
                         : [],
 
+                // Cloudinary URL
                 image:
                     req.file
-                        ? req.file.filename
+                        ? req.file.path
                         : null
             });
 
+            console.log(
+                "Product data before save:"
+            );
+
+            console.log(newProduct);
+
+            // ========================================
+            // SAVE TO MONGODB
+            // ========================================
 
             await newProduct.save();
 
-
             console.log(
-                "Product created:",
+                "Product created successfully:",
                 newProduct._id
             );
 
+            console.log(
+                "Cloudinary image:",
+                newProduct.image
+            );
 
-            res.redirect(
+            console.log(
+                "================================="
+            );
+
+            return res.redirect(
                 "/artisan/dashboard"
             );
 
-
         } catch (err) {
 
+            console.log("");
+            console.log("=================================");
+            console.log("CREATE PRODUCT ERROR");
+            console.log("=================================");
+
             console.log(
-                "Create product error:",
+                "Error:",
                 err
             );
 
-            res.status(500).send(
-                "Something went wrong while creating the product."
+            console.log(
+                "Message:",
+                err.message
+            );
+
+            console.log(
+                "Name:",
+                err.name
+            );
+
+            console.log(
+                "Stack:",
+                err.stack
+            );
+
+            console.log(
+                "Error JSON:",
+                JSON.stringify(
+                    err,
+                    Object.getOwnPropertyNames(err),
+                    2
+                )
+            );
+
+            console.log(
+                "================================="
+            );
+
+            return res.status(500).send(
+                "Something went wrong while creating the product: " +
+                (
+                    err.message ||
+                    "Unknown error"
+                )
             );
         }
     }
 );
-
 
 // ========================================
 // EDIT PRODUCT PAGE
@@ -449,13 +561,10 @@ router.get(
 
                     _id: req.params.id,
 
-                    // IMPORTANT:
-                    // Artisan can only edit
-                    // their own product
+                    artisan:
+                        req.session.userId
 
-                    artisan: req.session.userId
                 });
-
 
             if (!product) {
 
@@ -464,14 +573,12 @@ router.get(
                 );
             }
 
-
             res.render(
                 "artisan/edit-product",
                 {
                     product
                 }
             );
-
 
         } catch (err) {
 
@@ -487,15 +594,75 @@ router.get(
     }
 );
 
-
 // ========================================
 // UPDATE PRODUCT
 // ========================================
 
 router.put(
     "/products/:id",
+
     isArtisan,
-    upload.single("image"),
+
+    (req, res, next) => {
+
+        cloudinaryUpload.single("image")(
+            req,
+            res,
+
+            (err) => {
+
+                if (err) {
+
+                    console.log("");
+                    console.log(
+                        "================================="
+                    );
+
+                    console.log(
+                        "CLOUDINARY UPDATE ERROR"
+                    );
+
+                    console.log(
+                        "================================="
+                    );
+
+                    console.log(
+                        "Error:",
+                        err
+                    );
+
+                    console.log(
+                        "Message:",
+                        err.message
+                    );
+
+                    console.log(
+                        "Stack:",
+                        err.stack
+                    );
+
+                    console.log(
+                        "Error JSON:",
+                        JSON.stringify(
+                            err,
+                            Object.getOwnPropertyNames(err),
+                            2
+                        )
+                    );
+
+                    return res.status(500).send(
+                        "Image upload failed: " +
+                        (
+                            err.message ||
+                            "Unknown Cloudinary error"
+                        )
+                    );
+                }
+
+                next();
+            }
+        );
+    },
 
     async (req, res) => {
 
@@ -510,18 +677,15 @@ router.put(
                 tags
             } = req.body;
 
-
-            // Find only product belonging
-            // to logged-in artisan
-
             const product =
                 await Product.findOne({
 
                     _id: req.params.id,
 
-                    artisan: req.session.userId
-                });
+                    artisan:
+                        req.session.userId
 
+                });
 
             if (!product) {
 
@@ -530,82 +694,68 @@ router.put(
                 );
             }
 
-
-            // Update fields
+            // ========================================
+            // UPDATE FIELDS
+            // ========================================
 
             product.productName =
-                productName;
+                productName
+                    ? productName.trim()
+                    : product.productName;
 
             product.category =
-                category;
+                category
+                    ? category.trim()
+                    : product.category;
 
             product.material =
-                material;
+                material
+                    ? material.trim()
+                    : "";
 
             product.price =
                 Number(price);
 
             product.description =
-                description;
+                description
+                    ? description.trim()
+                    : "";
 
             product.tags =
                 tags
                     ? tags
                         .split(",")
                         .map(tag => tag.trim())
-                        .filter(tag => tag !== "")
+                        .filter(
+                            tag => tag !== ""
+                        )
                     : [];
 
-
-            // Replace image if new image uploaded
+            // ========================================
+            // NEW CLOUDINARY IMAGE
+            // ========================================
 
             if (req.file) {
 
-                // Delete old image
-
-                if (product.image) {
-
-                    const oldImagePath =
-                        path.join(
-                            __dirname,
-                            "..",
-                            "uploads",
-                            product.image
-                        );
-
-                    if (
-                        fs.existsSync(oldImagePath)
-                    ) {
-
-                        try {
-
-                            fs.unlinkSync(
-                                oldImagePath
-                            );
-
-                        } catch (deleteError) {
-
-                            console.log(
-                                "Old image delete error:",
-                                deleteError
-                            );
-                        }
-                    }
-                }
-
-
                 product.image =
-                    req.file.filename;
-            }
+                    req.file.path;
 
+                console.log(
+                    "New Cloudinary image:",
+                    product.image
+                );
+            }
 
             await product.save();
 
-
-            res.redirect(
-                "/artisan/dashboard"
+            console.log(
+                "Product updated:",
+                product._id
             );
 
+            return res.redirect(
+                "/artisan/dashboard"
+            );
 
         } catch (err) {
 
@@ -614,13 +764,26 @@ router.put(
                 err
             );
 
-            res.status(500).send(
-                "Something went wrong while updating the product."
+            console.log(
+                "Message:",
+                err.message
+            );
+
+            console.log(
+                "Stack:",
+                err.stack
+            );
+
+            return res.status(500).send(
+                "Something went wrong while updating the product: " +
+                (
+                    err.message ||
+                    "Unknown error"
+                )
             );
         }
     }
 );
-
 
 // ========================================
 // DELETE PRODUCT
@@ -628,6 +791,7 @@ router.put(
 
 router.delete(
     "/products/:id",
+
     isArtisan,
 
     async (req, res) => {
@@ -639,13 +803,10 @@ router.delete(
 
                     _id: req.params.id,
 
-                    // IMPORTANT:
-                    // Artisan can only delete
-                    // their own product
+                    artisan:
+                        req.session.userId
 
-                    artisan: req.session.userId
                 });
-
 
             if (!product) {
 
@@ -654,49 +815,18 @@ router.delete(
                 );
             }
 
-
-            // Delete product image
-
-            if (product.image) {
-
-                const imagePath =
-                    path.join(
-                        __dirname,
-                        "..",
-                        "uploads",
-                        product.image
-                    );
-
-                if (
-                    fs.existsSync(imagePath)
-                ) {
-
-                    try {
-
-                        fs.unlinkSync(
-                            imagePath
-                        );
-
-                    } catch (deleteError) {
-
-                        console.log(
-                            "Image delete error:",
-                            deleteError
-                        );
-                    }
-                }
-            }
-
-
             await Product.deleteOne({
                 _id: product._id
             });
 
-
-            res.redirect(
-                "/artisan/dashboard"
+            console.log(
+                "Product deleted:",
+                product._id
             );
 
+            return res.redirect(
+                "/artisan/dashboard"
+            );
 
         } catch (err) {
 
@@ -705,12 +835,25 @@ router.delete(
                 err
             );
 
-            res.status(500).send(
+            console.log(
+                "Message:",
+                err.message
+            );
+
+            console.log(
+                "Stack:",
+                err.stack
+            );
+
+            return res.status(500).send(
                 "Something went wrong while deleting the product."
             );
         }
     }
 );
 
+// ========================================
+// EXPORT ROUTER
+// ========================================
 
 module.exports = router;

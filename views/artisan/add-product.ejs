@@ -2,167 +2,304 @@
 
 <div class="product-page">
 
+    <!-- HEADER -->
     <div class="product-header">
+        <span class="product-eyebrow">CRAFTCONNECT • ARTISAN</span>
+
         <h1>Add New Product</h1>
-        <p>Showcase your handmade product to customers.</p>
+
+        <p>
+            Showcase your handmade creation and connect it with customers.
+        </p>
     </div>
 
-    <form action="/artisan/products" method="POST" enctype="multipart/form-data">
+
+    <form
+        action="/artisan/products"
+        method="POST"
+        enctype="multipart/form-data"
+    >
 
         <div class="product-form">
 
-            <!-- Product Image -->
+            <!-- ================= IMAGE SECTION ================= -->
+            <div class="form-section image-section">
 
-            <div class="form-section">
+                <div class="section-heading">
+                    <div class="section-number">01</div>
 
-                <h2>Product Image</h2>
+                    <div>
+                        <h2>Product Image</h2>
+                        <p>
+                            Add a clear, attractive image of your handmade product.
+                        </p>
+                    </div>
+                </div>
 
-                <div class="image-upload">
+
+                <label for="productImage" class="image-upload">
+
+                    <div class="upload-icon">
+                        ✦
+                    </div>
+
+                    <div class="upload-content">
+
+                        <strong>Upload Product Image</strong>
+
+                        <span>
+                            Click to browse or choose an image
+                        </span>
+
+                        <small>
+                            JPG, PNG, WEBP • Recommended high quality image
+                        </small>
+
+                    </div>
 
                     <input
                         type="file"
+                        id="productImage"
                         name="image"
                         accept="image/*"
                         required
                     >
 
-                    <p>
-                        Upload a clear image of your handmade product.
-                    </p>
+                </label>
 
-                </div>
+                <div id="imagePreview" class="image-preview"></div>
 
             </div>
 
 
-            <!-- Product Information -->
-
+            <!-- ================= PRODUCT INFORMATION ================= -->
             <div class="form-section">
 
-                <h2>Product Information</h2>
+                <div class="section-heading">
 
-                <label for="productName">
-                    Product Name
-                </label>
+                    <div class="section-number">02</div>
 
-                <input
-                    type="text"
-                    id="productName"
-                    name="productName"
-                    placeholder="e.g. Handmade Wooden Elephant"
-                    required
-                >
+                    <div>
+                        <h2>Product Information</h2>
+                        <p>
+                            Tell customers about your unique handmade creation.
+                        </p>
+                    </div>
 
-
-                <label for="category">
-                    Category
-                </label>
-
-                <select id="category" name="category" required>
-
-                    <option value="">
-                        Select Category
-                    </option>
-
-                    <option value="Home Decor">
-                        Home Decor
-                    </option>
-
-                    <option value="Handicrafts">
-                        Handicrafts
-                    </option>
-
-                    <option value="Jewellery">
-                        Jewellery
-                    </option>
-
-                    <option value="Clothing">
-                        Clothing
-                    </option>
-
-                    <option value="Pottery">
-                        Pottery
-                    </option>
-
-                    <option value="Paintings">
-                        Paintings
-                    </option>
-
-                    <option value="Other">
-                        Other
-                    </option>
-
-                </select>
+                </div>
 
 
-                <label for="material">
-                    Material
-                </label>
+                <!-- PRODUCT NAME -->
+                <div class="form-group">
 
-                <input
-                    type="text"
-                    id="material"
-                    name="material"
-                    placeholder="e.g. Wood, Clay, Cotton"
-                >
+                    <label for="productName">
+                        Product Name
+                    </label>
 
+                    <input
+                        type="text"
+                        id="productName"
+                        name="productName"
+                        placeholder="e.g. Handmade Wooden Elephant"
+                        required
+                    >
 
-                <label for="price">
-                    Price (₹)
-                </label>
-
-                <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    placeholder="Enter price"
-                    min="1"
-                    required
-                >
+                </div>
 
 
-                <label for="description">
-                    Description
-                </label>
+                <!-- CATEGORY + MATERIAL -->
+                <div class="form-row">
 
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="6"
-                    placeholder="Describe your product..."
-                ></textarea>
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                            required
+                        >
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Home Decor">
+                                Home Decor
+                            </option>
+
+                            <option value="Handicrafts">
+                                Handicrafts
+                            </option>
+
+                            <option value="Jewellery">
+                                Jewellery
+                            </option>
+
+                            <option value="Clothing">
+                                Clothing
+                            </option>
+
+                            <option value="Pottery">
+                                Pottery
+                            </option>
+
+                            <option value="Paintings">
+                                Paintings
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
 
 
-                <label for="tags">
-                    Tags
-                </label>
+                    <div class="form-group">
 
-                <input
-                    type="text"
-                    id="tags"
-                    name="tags"
-                    placeholder="handmade, traditional, wooden"
-                >
+                        <label for="material">
+                            Material
+                        </label>
+
+                        <input
+                            type="text"
+                            id="material"
+                            name="material"
+                            placeholder="e.g. Wood, Clay, Cotton"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRICE -->
+                <div class="form-group">
+
+                    <label for="price">
+                        Price
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            placeholder="Enter product price"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        placeholder="Describe your product, its story, craftsmanship and uniqueness..."
+                    ></textarea>
+
+                    <small class="field-hint">
+                        Tell customers what makes this product special.
+                    </small>
+
+                </div>
+
+
+                <!-- TAGS -->
+                <div class="form-group">
+
+                    <label for="tags">
+                        Tags
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tags"
+                        name="tags"
+                        placeholder="handmade, traditional, wooden"
+                    >
+
+                    <small class="field-hint">
+                        Separate multiple tags with commas.
+                    </small>
+
+                </div>
 
             </div>
 
         </div>
 
 
+        <!-- ================= ACTIONS ================= -->
+
         <div class="form-actions">
 
-            <a href="/artisan/dashboard" class="cancel-btn">
+            <a
+                href="/artisan/dashboard"
+                class="cancel-btn"
+            >
                 Cancel
             </a>
 
-            <button type="submit" class="primary-btn">
+            <button
+                type="submit"
+                class="primary-btn"
+            >
                 Save Product
+                <span>→</span>
             </button>
 
         </div>
 
     </form>
 
-</div> 
+</div>
 
 
+<script>
+
+    const imageInput = document.getElementById("productImage");
+    const imagePreview = document.getElementById("imagePreview");
+
+    imageInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (!file) {
+            imagePreview.innerHTML = "";
+            return;
+        }
+
+        const imageURL = URL.createObjectURL(file);
+
+        imagePreview.innerHTML = `
+            <div class="preview-card">
+                <img src="${imageURL}" alt="Product Preview">
+
+                <div class="preview-info">
+                    <strong>${file.name}</strong>
+                    <span>Image selected successfully</span>
+                </div>
+            </div>
+        `;
+
+    });
+
+</script>

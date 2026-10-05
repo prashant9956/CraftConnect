@@ -4,74 +4,136 @@
 
     <div class="auth-card">
 
-        <div class="auth-header">
+        <!-- LOGIN SIDE -->
+        <div class="auth-form-side">
 
-            <span class="auth-eyebrow">
-                CRAFTCONNECT
-            </span>
+            <div class="auth-brand-mobile">
+                CRAFT<span>CONNECT</span>
+            </div>
 
-            <h1>Welcome Back</h1>
+            <div class="auth-header">
 
-            <p>
-                Login to continue your CraftConnect journey.
-            </p>
+                <span class="auth-eyebrow">
+                    CRAFTCONNECT
+                </span>
+
+                <h1>Login</h1>
+
+                <p>
+                    Welcome back. Continue your journey with CraftConnect.
+                </p>
+
+            </div>
+
+
+            <form action="/login" method="POST">
+
+                <!-- EMAIL -->
+                <div class="auth-form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="auth-form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="auth-input-wrapper">
+
+                        <span class="auth-input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+                <button
+                    type="submit"
+                    class="auth-submit-btn"
+                >
+                    <span>Login</span>
+                    <span class="auth-arrow">→</span>
+                </button>
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                Don't have an account?
+
+                <a href="/signup">
+                    Sign Up
+                </a>
+
+            </div>
 
         </div>
 
 
-        <form action="/login" method="POST">
+        <!-- WELCOME SIDE -->
+        <div class="auth-welcome-side">
 
-            <div class="auth-form-group">
+            <div class="welcome-content">
 
-                <label for="email">
-                    Email Address
-                </label>
+                <div class="welcome-logo">
+                    ✦
+                </div>
 
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    required
-                >
+                <span class="welcome-small">
+                    WELCOME BACK
+                </span>
+
+                <h2>
+                    Craft.
+                    <br>
+                    Connect.
+                    <br>
+                    Create.
+                </h2>
+
+                <p>
+                    Discover unique handmade products
+                    and connect with talented local artisans.
+                </p>
+
+                <div class="welcome-line"></div>
+
+                <span class="welcome-tag">
+                    EMPOWERING ARTISANS THROUGH TECHNOLOGY
+                </span>
 
             </div>
-
-
-            <div class="auth-form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="auth-submit-btn"
-            >
-                Login →
-            </button>
-
-        </form>
-
-
-        <div class="auth-footer">
-
-            Don't have an account?
-
-            <a href="/signup">
-                Create Account
-            </a>
 
         </div>
 
