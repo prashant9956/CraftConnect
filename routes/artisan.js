@@ -87,6 +87,25 @@ router.get("/dashboard", isArtisan, async (req, res) => {
         );
     }
 });
+router.get("/products", isArtisan, async (req, res) => {
+    try {
+        const products = await Product.find({
+            artisan: req.session.userId
+        }).sort({ createdAt: -1 });
+
+        res.render("artisan/dashboard", {
+            products
+        });
+
+    } catch (err) {
+        console.log("Products page error:", err);
+
+        res.status(500).send(
+            "Something went wrong while loading products."
+        );
+    }
+});
+
 
 // ========================================
 // ADD PRODUCT PAGE

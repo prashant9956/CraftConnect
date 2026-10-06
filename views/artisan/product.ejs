@@ -1,0 +1,24 @@
+<%
+    let imageUrl = "";
+
+    if (product.image) {
+        const image = String(product.image);
+
+        if (
+            image.startsWith("http://") ||
+            image.startsWith("https://")
+        ) {
+            imageUrl = image;
+        } else {
+            imageUrl = "/uploads/" + image;
+        }
+    }
+%>
+
+<% if (imageUrl) { %>
+    <img
+        src="<%= imageUrl %>"
+        alt="<%= product.productName %>"
+        class="product-image"
+    >
+<% } %>
