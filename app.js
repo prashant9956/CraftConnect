@@ -61,7 +61,7 @@ app.use("/admin", adminRouter);
 // Replace your current MongoDB and Server code at the bottom with this:
 
 const PORT = process.env.PORT || 8080;
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGODB_URI;
 
 mongoose
     .connect(MONGO_URL)

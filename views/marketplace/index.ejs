@@ -2,1060 +2,836 @@
 
 <div class="marketplace-page">
 
-    <div class="marketplace-container">
-
-        <!-- ================================
-             HEADER
-        ================================= -->
-
-        <div class="marketplace-heading">
-
-            <div>
-                <span class="section-label">
-                    CRAFT MARKETPLACE
-                </span>
-
-                <h2>
-                    Discover Handmade Products
-                </h2>
-
-                <p class="marketplace-subtitle">
-                    Explore unique products created by talented local artisans.
-                </p>
-            </div>
-
-            <div class="products-count">
-                <strong>
-                    <%= products ? products.length : 0 %>
-                </strong>
-                products
-            </div>
-
-        </div>
-
-
-        <!-- ================================
-             SEARCH & FILTER
-        ================================= -->
-
-        <form
-            action="/marketplace"
-            method="GET"
-            class="marketplace-filters"
-        >
-
-            <div class="search-box">
-
-                <span class="search-icon">
-                    🔍
-                </span>
-
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="Search handmade products..."
-                    value="<%= typeof search !== 'undefined' ? search : '' %>"
-                >
-
-            </div>
-
-
-            <div class="category-filter">
-
-                <select name="category">
-
-                    <option value="">
-                        All Categories
-                    </option>
-
-                    <option
-                        value="Home Decor"
-                        <%= typeof category !== 'undefined' && category === "Home Decor" ? "selected" : "" %>
-                    >
-                        Home Decor
-                    </option>
-
-                    <option
-                        value="Handicrafts"
-                        <%= typeof category !== 'undefined' && category === "Handicrafts" ? "selected" : "" %>
-                    >
-                        Handicrafts
-                    </option>
-
-                    <option
-                        value="Jewellery"
-                        <%= typeof category !== 'undefined' && category === "Jewellery" ? "selected" : "" %>
-                    >
-                        Jewellery
-                    </option>
-
-                    <option
-                        value="Clothing"
-                        <%= typeof category !== 'undefined' && category === "Clothing" ? "selected" : "" %>
-                    >
-                        Clothing
-                    </option>
-
-                    <option
-                        value="Pottery"
-                        <%= typeof category !== 'undefined' && category === "Pottery" ? "selected" : "" %>
-                    >
-                        Pottery
-                    </option>
-
-                    <option
-                        value="Paintings"
-                        <%= typeof category !== 'undefined' && category === "Paintings" ? "selected" : "" %>
-                    >
-                        Paintings
-                    </option>
-
-                    <option
-                        value="Other"
-                        <%= typeof category !== 'undefined' && category === "Other" ? "selected" : "" %>
-                    >
-                        Other
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="filter-btn"
-            >
-                Search
-            </button>
-
-        </form>
-
-
-        <!-- ================================
-             PRODUCTS
-        ================================= -->
-
-        <% if (!products || products.length === 0) { %>
-
-            <div class="empty-marketplace">
-
-                <div class="empty-icon">
-                    ✦
-                </div>
-
-                <h3>
-                    No products found
-                </h3>
-
-                <p>
-                    Try another search or category.
-                </p>
-
-            </div>
-
-        <% } else { %>
-
-
-            <div class="product-grid">
-
-                <% products.forEach(product => { %>
-
-                    <article class="marketplace-product-card">
-
-
-                        <!-- ================================
-                             PRODUCT IMAGE
-                        ================================= -->
-<div class="product-image-wrapper">
-
-    <% if (product.image) { %>
-
-        <img
-            src="<%= product.image %>"
-            alt="<%= product.productName %>"
-            class="marketplace-product-image"
-            loading="lazy"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        >
-
-        <div
-            class="product-image-error"
-            style="display:none;"
-        >
-            <span>✦</span>
-            <small>Image unavailable</small>
-        </div>
-
-    <% } else { %>
-
-        <div class="product-image-placeholder">
-            <span>✦</span>
-            <small>Handmade Craft</small>
-        </div>
-
-    <% } %>
-
-    <span class="product-category-badge">
-        <%= product.category %>
-    </span>
-
-</div>
-
-                                <div class="product-image-placeholder">
-
-                                    <span>
-                                        ✦
-                                    </span>
-
-                                    <small>
-                                        Handmade Craft
-                                    </small>
-
-                                </div>
-
-                            <% } %>
-
-
-                            <!-- CATEGORY -->
-
-                            <span class="product-category-badge">
-                                <%= product.category %>
-                            </span>
-
-                        </div>
-
-
-                        <!-- ================================
-                             PRODUCT CONTENT
-                        ================================= -->
-
-                        <div class="product-card-content">
-
-                            <div class="product-card-top">
-
-                                <h3>
-                                    <%= product.productName %>
-                                </h3>
-
-
-                                <% if (product.material) { %>
-
-                                    <p class="product-material">
-
-                                        <span>
-                                            Material:
-                                        </span>
-
-                                        <%= product.material %>
-
-                                    </p>
-
-                                <% } %>
-
-                            </div>
-
-
-                            <!-- DESCRIPTION -->
-
-                            <p class="product-description">
-
-                                <%= product.description ||
-                                    "Beautiful handmade product crafted by a local artisan." %>
-
-                            </p>
-
-
-                            <!-- TAGS -->
-
-                            <% if (
-                                product.tags &&
-                                product.tags.length > 0
-                            ) { %>
-
-                                <div class="product-tags">
-
-                                    <% product.tags.slice(0, 3).forEach(tag => { %>
-
-                                        <span class="product-tag">
-                                            #<%= tag %>
-                                        </span>
-
-                                    <% }) %>
-
-                                </div>
-
-                            <% } %>
-
-
-                            <!-- PRICE + BUTTON -->
-
-                            <div class="product-card-bottom">
-
-                                <div class="price-container">
-
-                                    <span class="price-label">
-                                        Price
-                                    </span>
-
-                                    <span class="product-price">
-                                        ₹<%= Number(
-                                            product.price || 0
-                                        ).toLocaleString("en-IN") %>
-                                    </span>
-
-                                </div>
-
-
-                                <a
-                                    href="/marketplace/product/<%= product._id %>"
-                                    class="view-product-btn"
-                                >
-                                    View Product →
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-                <% }) %>
-
-            </div>
-
-        <% } %>
+  <!-- ================= HERO ================= -->
+  <section class="marketplace-hero">
+
+    <div class="hero-content">
+
+      <span class="hero-badge">
+        ✦ HANDMADE • AUTHENTIC • LOCAL
+      </span>
+
+      <h1>
+        Discover
+        <span>Beautiful Handmade Crafts</span>
+      </h1>
+
+      <p>
+        Explore unique handmade products created by talented local artisans.
+        Support creativity, tradition and craftsmanship.
+      </p>
 
     </div>
 
+  </section>
+
+
+  <!-- ================= SEARCH / FILTER ================= -->
+  <section class="marketplace-toolbar">
+
+    <form
+      action="/marketplace"
+      method="GET"
+      class="marketplace-search-form"
+    >
+
+      <div class="search-box">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          name="search"
+          value="<%= search || '' %>"
+          placeholder="Search handmade products..."
+        >
+
+      </div>
+
+
+      <div class="category-box">
+
+        <select name="category">
+
+          <option value="All">
+            All Categories
+          </option>
+
+          <option
+            value="Pottery"
+            <%= category === "Pottery" ? "selected" : "" %>
+          >
+            Pottery
+          </option>
+
+          <option
+            value="Textiles"
+            <%= category === "Textiles" ? "selected" : "" %>
+          >
+            Textiles
+          </option>
+
+          <option
+            value="Jewellery"
+            <%= category === "Jewellery" ? "selected" : "" %>
+          >
+            Jewellery
+          </option>
+
+          <option
+            value="Woodwork"
+            <%= category === "Woodwork" ? "selected" : "" %>
+          >
+            Woodwork
+          </option>
+
+          <option
+            value="Paintings"
+            <%= category === "Paintings" ? "selected" : "" %>
+          >
+            Paintings
+          </option>
+
+          <option
+            value="Decor"
+            <%= category === "Decor" ? "selected" : "" %>
+          >
+            Decor
+          </option>
+
+          <option
+            value="Other"
+            <%= category === "Other" ? "selected" : "" %>
+          >
+            Other
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button type="submit" class="search-btn">
+        Search
+      </button>
+
+    </form>
+
+  </section>
+
+
+  <!-- ================= MARKETPLACE ================= -->
+  <main class="marketplace-container">
+
+    <div class="marketplace-heading">
+
+      <div>
+        <span class="section-label">
+          OUR COLLECTION
+        </span>
+
+        <h2>
+          Explore Handmade Products
+        </h2>
+
+        <p>
+          Discover something special, made with passion.
+        </p>
+      </div>
+
+      <div class="product-count">
+        <%= products.length %> Products
+      </div>
+
+    </div>
+
+
+    <% if (products && products.length > 0) { %>
+
+      <div class="product-grid">
+
+        <% products.forEach(product => { %>
+
+          <%
+            /*
+              IMAGE HANDLING
+
+              Cloudinary:
+              https://res.cloudinary.com/...
+
+              Old local image:
+              filename.png
+            */
+
+            let imageUrl = "";
+
+            if (product.image) {
+
+              const image = String(product.image);
+
+              if (
+                image.startsWith("http://") ||
+                image.startsWith("https://")
+              ) {
+
+                // Cloudinary image
+                imageUrl = image;
+
+              } else {
+
+                // Old local image
+                imageUrl = "/uploads/" + image;
+
+              }
+
+            }
+          %>
+
+
+          <!-- ================= PRODUCT CARD ================= -->
+
+          <article class="product-card">
+
+
+            <!-- PRODUCT IMAGE -->
+
+            <div class="product-image-wrapper">
+
+              <% if (imageUrl) { %>
+
+                <img
+                  src="<%= imageUrl %>"
+                  alt="<%= product.productName %>"
+                  class="marketplace-product-image"
+                  loading="lazy"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                >
+
+                <!-- Shown only if image fails -->
+                <div
+                  class="product-image-error"
+                  style="display:none;"
+                >
+
+                  <span>✦</span>
+
+                  <small>
+                    Image unavailable
+                  </small>
+
+                </div>
+
+              <% } else { %>
+
+                <!-- No image -->
+                <div class="product-image-placeholder">
+
+                  <span>✦</span>
+
+                  <small>
+                    Handmade Craft
+                  </small>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- CATEGORY -->
+
+              <% if (product.category) { %>
+
+                <span class="product-category-badge">
+                  <%= product.category %>
+                </span>
+
+              <% } %>
+
+            </div>
+
+
+            <!-- PRODUCT CONTENT -->
+
+            <div class="product-card-content">
+
+
+              <div class="product-card-top">
+
+                <h3>
+                  <%= product.productName %>
+                </h3>
+
+                <span class="product-price">
+                  ₹<%= Number(product.price || 0).toLocaleString("en-IN") %>
+                </span>
+
+              </div>
+
+
+              <% if (product.material) { %>
+
+                <div class="product-material">
+                  <span>Material:</span>
+                  <%= product.material %>
+                </div>
+
+              <% } %>
+
+
+              <% if (product.description) { %>
+
+                <p class="product-description">
+
+                  <%= product.description.length > 100
+                    ? product.description.substring(0, 100) + "..."
+                    : product.description
+                  %>
+
+                </p>
+
+              <% } %>
+
+
+              <!-- TAGS -->
+
+              <% if (product.tags && product.tags.length > 0) { %>
+
+                <div class="product-tags">
+
+                  <% product.tags.slice(0, 3).forEach(tag => { %>
+
+                    <span class="product-tag">
+                      #<%= tag %>
+                    </span>
+
+                  <% }) %>
+
+                </div>
+
+              <% } %>
+
+
+              <!-- VIEW PRODUCT -->
+
+              <a
+                href="/marketplace/product/<%= product._id %>"
+                class="view-product-btn"
+              >
+                View Product
+                <span>→</span>
+              </a>
+
+
+            </div>
+
+          </article>
+
+        <% }) %>
+
+      </div>
+
+
+    <% } else { %>
+
+
+      <!-- ================= EMPTY STATE ================= -->
+
+      <div class="empty-marketplace">
+
+        <div class="empty-icon">
+          ✦
+        </div>
+
+        <h3>
+          No Products Found
+        </h3>
+
+        <p>
+          We couldn't find any handmade products matching your search.
+        </p>
+
+        <a
+          href="/marketplace"
+          class="clear-search-btn"
+        >
+          View All Products
+        </a>
+
+      </div>
+
+
+    <% } %>
+
+  </main>
+
 </div>
 
 
-<!-- =========================================
-     MARKETPLACE PAGE CSS
-========================================= -->
+<!-- =====================================================
+     MARKETPLACE IMAGE / CARD FIX
+     ===================================================== -->
 
 <style>
 
-    /* =========================================
-       PAGE
-    ========================================= */
-
-    .marketplace-page {
-        min-height: 100vh;
-
-        padding: 50px 20px 80px;
-
-        background: #f8f1e7;
-    }
-
-
-    .marketplace-container {
-        max-width: 1250px;
-
-        margin: 0 auto;
-    }
-
-
-    /* =========================================
-       HEADER
-    ========================================= */
-
-    .marketplace-heading {
-
-        display: flex;
-
-        justify-content: space-between;
-
-        align-items: flex-end;
-
-        gap: 30px;
-
-        margin-bottom: 30px;
-    }
-
-
-    .section-label {
-
-        display: inline-block;
-
-        margin-bottom: 8px;
-
-        color: #a65f3b;
-
-        font-size: 12px;
-
-        font-weight: 700;
-
-        letter-spacing: 2px;
-    }
-
-
-    .marketplace-heading h2 {
-
-        margin: 0;
-
-        color: #4a2c20;
-
-        font-size: 36px;
-
-        line-height: 1.2;
-
-        font-weight: 700;
-    }
-
-
-    .marketplace-subtitle {
-
-        margin: 10px 0 0;
-
-        color: #795548;
-
-        font-size: 15px;
-    }
-
-
-    .products-count {
-
-        white-space: nowrap;
-
-        padding: 12px 18px;
-
-        background: #fffaf4;
-
-        border: 1px solid #e5d5c5;
-
-        border-radius: 12px;
-
-        color: #795548;
-
-        font-size: 14px;
-    }
-
-
-    .products-count strong {
-
-        color: #a65f3b;
-
-        font-size: 18px;
-    }
-
-
-    /* =========================================
-       SEARCH
-    ========================================= */
-
-    .marketplace-filters {
-
-        display: flex;
-
-        gap: 12px;
-
-        margin-bottom: 40px;
-
-        padding: 16px;
-
-        background: #fffaf4;
-
-        border: 1px solid #e5d5c5;
-
-        border-radius: 16px;
-
-        box-shadow:
-            0 8px 25px rgba(91, 58, 42, 0.06);
-    }
-
-
-    .search-box {
-
-        position: relative;
-
-        flex: 1;
-    }
-
-
-    .search-icon {
-
-        position: absolute;
-
-        left: 15px;
-
-        top: 50%;
-
-        transform: translateY(-50%);
-
-        font-size: 16px;
-    }
-
-
-    .search-box input {
-
-        width: 100%;
-
-        height: 48px;
-
-        box-sizing: border-box;
-
-        padding: 0 16px 0 44px;
-
-        background: #fff;
-
-        border: 1px solid #dfcbbb;
-
-        border-radius: 10px;
-
-        color: #4a2c20;
-
-        font-size: 14px;
-
-        outline: none;
-    }
-
-
-    .search-box input:focus {
-
-        border-color: #b66b45;
-
-        box-shadow:
-            0 0 0 3px rgba(182, 107, 69, 0.1);
-    }
-
-
-    .category-filter select {
-
-        width: 190px;
-
-        height: 48px;
-
-        padding: 0 14px;
-
-        background: #fff;
-
-        border: 1px solid #dfcbbb;
-
-        border-radius: 10px;
-
-        color: #4a2c20;
-
-        font-size: 14px;
-
-        outline: none;
-
-        cursor: pointer;
-    }
-
-
-    .filter-btn {
-
-        height: 48px;
-
-        padding: 0 25px;
-
-        background: #a65f3b;
-
-        border: none;
-
-        border-radius: 10px;
-
-        color: white;
-
-        font-size: 14px;
-
-        font-weight: 600;
-
-        cursor: pointer;
-
-        transition: 0.2s ease;
-    }
-
-
-    .filter-btn:hover {
-
-        background: #81472c;
-
-        transform: translateY(-1px);
-    }
-
-
-    /* =========================================
-       GRID
-    ========================================= */
-
-    .product-grid {
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(auto-fill, minmax(280px, 1fr));
-
-        gap: 25px;
-    }
-
-
-    /* =========================================
-       CARD
-    ========================================= */
-
-    .marketplace-product-card {
-
-        overflow: hidden;
-
-        background: #fffaf4;
-
-        border: 1px solid #e5d5c5;
-
-        border-radius: 18px;
-
-        box-shadow:
-            0 8px 25px rgba(91, 58, 42, 0.07);
-
-        transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
-    }
-
-
-    .marketplace-product-card:hover {
-
-        transform: translateY(-5px);
-
-        box-shadow:
-            0 15px 35px rgba(91, 58, 42, 0.13);
-    }
-
-
-    /* =========================================
-       IMAGE
-    ========================================= */
-
-    .product-image-wrapper {
-
-        position: relative;
-
-        width: 100%;
-
-        height: 270px;
-
-        overflow: hidden;
-
-        background: #eee0d1;
-    }
-
-
-    .marketplace-product-image {
-
-        display: block;
-
-        width: 100%;
-
-        height: 100%;
-
-        object-fit: cover;
-
-        transition: transform 0.35s ease;
-    }
-
-
-    .marketplace-product-card:hover
-    .marketplace-product-image {
-
-        transform: scale(1.04);
-    }
-
-
-    /* =========================================
-       IMAGE FALLBACK
-    ========================================= */
-
-    .product-image-placeholder,
-    .product-image-error {
-
-        width: 100%;
-
-        height: 100%;
-
-        flex-direction: column;
-
-        align-items: center;
-
-        justify-content: center;
-
-        background: #ead9c8;
-
-        color: #a65f3b;
-    }
-
-
-    .product-image-placeholder span,
-    .product-image-error span {
-
-        margin-bottom: 8px;
-
-        font-size: 45px;
-    }
-
-
-    .product-image-placeholder small,
-    .product-image-error small {
-
-        color: #795548;
-
-        font-size: 13px;
-    }
-
-
-    /* =========================================
-       CATEGORY
-    ========================================= */
-
-    .product-category-badge {
-
-        position: absolute;
-
-        top: 14px;
-
-        left: 14px;
-
-        padding: 7px 11px;
-
-        background: rgba(255, 250, 244, 0.94);
-
-        border-radius: 20px;
-
-        color: #8c4e32;
-
-        font-size: 11px;
-
-        font-weight: 700;
-
-        box-shadow:
-            0 3px 10px rgba(0, 0, 0, 0.08);
-    }
-
-
-    /* =========================================
-       CONTENT
-    ========================================= */
-
-    .product-card-content {
-
-        padding: 20px;
-    }
-
-
-    .product-card-top h3 {
-
-        margin: 0;
-
-        color: #4a2c20;
-
-        font-size: 20px;
-
-        line-height: 1.3;
-
-        font-weight: 700;
-    }
-
-
-    .product-material {
-
-        margin: 8px 0 0;
-
-        color: #8a6a5b;
-
-        font-size: 13px;
-    }
-
-
-    .product-material span {
-
-        color: #6d4c3d;
-
-        font-weight: 600;
-    }
-
-
-    .product-description {
-
-        margin: 14px 0;
-
-        color: #795548;
-
-        font-size: 14px;
-
-        line-height: 1.6;
-
-        display: -webkit-box;
-
-        -webkit-line-clamp: 3;
-
-        -webkit-box-orient: vertical;
-
-        overflow: hidden;
-    }
-
-
-    /* =========================================
-       TAGS
-    ========================================= */
-
-    .product-tags {
-
-        display: flex;
-
-        flex-wrap: wrap;
-
-        gap: 6px;
-
-        margin-bottom: 18px;
-    }
-
-
-    .product-tag {
-
-        padding: 5px 8px;
-
-        background: #f1e2d3;
-
-        border-radius: 7px;
-
-        color: #9a5838;
-
-        font-size: 11px;
-    }
-
-
-    /* =========================================
-       BOTTOM
-    ========================================= */
-
-    .product-card-bottom {
-
-        display: flex;
-
-        justify-content: space-between;
-
-        align-items: flex-end;
-
-        gap: 12px;
-
-        padding-top: 15px;
-
-        border-top: 1px solid #eadbd0;
-    }
-
-
-    .price-container {
-
-        display: flex;
-
-        flex-direction: column;
-    }
-
-
-    .price-label {
-
-        margin-bottom: 3px;
-
-        color: #9a8174;
-
-        font-size: 11px;
-
-        text-transform: uppercase;
-
-        letter-spacing: 0.5px;
-    }
-
-
-    .product-price {
-
-        color: #8f4d31;
-
-        font-size: 21px;
-
-        font-weight: 700;
-    }
-
-
-    /* =========================================
-       BUTTON
-    ========================================= */
-
-    .view-product-btn {
-
-        display: inline-flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        padding: 10px 14px;
-
-        background: #a65f3b;
-
-        border-radius: 9px;
-
-        color: white;
-
-        text-decoration: none;
-
-        font-size: 12px;
-
-        font-weight: 600;
-
-        white-space: nowrap;
-
-        transition: 0.2s ease;
-    }
-
-
-    .view-product-btn:hover {
-
-        background: #81472c;
-
-        color: white;
-
-        transform: translateY(-1px);
-    }
-
-
-    /* =========================================
-       EMPTY
-    ========================================= */
-
-    .empty-marketplace {
-
-        padding: 80px 20px;
-
-        text-align: center;
-
-        background: #fffaf4;
-
-        border: 1px solid #e5d5c5;
-
-        border-radius: 18px;
-    }
-
-
-    .empty-icon {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        width: 70px;
-
-        height: 70px;
-
-        margin: 0 auto 18px;
-
-        background: #ead9c8;
-
-        border-radius: 50%;
-
-        color: #a65f3b;
-
-        font-size: 30px;
-    }
-
-
-    .empty-marketplace h3 {
-
-        margin: 0 0 8px;
-
-        color: #4a2c20;
-
-        font-size: 22px;
-    }
-
-
-    .empty-marketplace p {
-
-        margin: 0;
-
-        color: #795548;
-
-        font-size: 14px;
-    }
-
-
-    /* =========================================
-       RESPONSIVE
-    ========================================= */
-
-    @media (max-width: 768px) {
-
-        .marketplace-page {
-
-            padding: 30px 15px 60px;
-        }
-
-
-        .marketplace-heading {
-
-            flex-direction: column;
-
-            align-items: flex-start;
-        }
-
-
-        .marketplace-heading h2 {
-
-            font-size: 28px;
-        }
-
-
-        .marketplace-filters {
-
-            flex-direction: column;
-        }
-
-
-        .category-filter select {
-
-            width: 100%;
-        }
-
-
-        .filter-btn {
-
-            width: 100%;
-        }
-
-
-        .product-grid {
-
-            grid-template-columns:
-                repeat(
-                    auto-fill,
-                    minmax(240px, 1fr)
-                );
-        }
-
-    }
-
-
-    @media (max-width: 480px) {
-
-        .product-grid {
-
-            grid-template-columns: 1fr;
-        }
-
-
-        .product-image-wrapper {
-
-            height: 250px;
-        }
-
-
-        .product-card-bottom {
-
-            align-items: center;
-        }
-
-    }
+.marketplace-page {
+  background: #fcfaf8;
+  min-height: 100vh;
+  color: #2f241e;
+}
+
+
+/* ================= HERO ================= */
+
+.marketplace-hero {
+  position: relative;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  padding: 70px 8%;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(75, 38, 20, 0.96),
+      rgba(139, 69, 19, 0.92)
+    );
+  overflow: hidden;
+}
+
+.marketplace-hero::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  right: -120px;
+  top: -160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 750px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 30px;
+  color: #f8d7b8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+
+.marketplace-hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.05;
+  font-weight: 800;
+}
+
+.marketplace-hero h1 span {
+  display: block;
+  color: #f3c49d;
+}
+
+.marketplace-hero p {
+  max-width: 650px;
+  margin-top: 22px;
+  color: rgba(255,255,255,0.91);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+
+/* ================= TOOLBAR ================= */
+
+.marketplace-toolbar {
+  padding: 25px 8%;
+  background: #fff;
+  border-bottom: 1px solid #eadbce;
+}
+
+.marketplace-search-form {
+  display: flex;
+  gap: 12px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b4513;
+  font-size: 23px;
+}
+
+.search-box input {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  border: 1px solid #dfcfc2;
+  border-radius: 8px;
+  padding: 0 18px 0 45px;
+  font-size: 14px;
+  outline: none;
+  background: #fcfaf8;
+}
+
+.search-box input:focus {
+  border-color: #a5663f;
+  box-shadow: 0 0 0 3px rgba(165,102,63,0.10);
+}
+
+.category-box select {
+  height: 48px;
+  min-width: 170px;
+  padding: 0 14px;
+  border: 1px solid #dfcfc2;
+  border-radius: 8px;
+  background: #fcfaf8;
+  color: #2f241e;
+  outline: none;
+}
+
+.search-btn {
+  height: 48px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 8px;
+  background: #8b4513;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.search-btn:hover {
+  background: #6f350f;
+}
+
+
+/* ================= MAIN ================= */
+
+.marketplace-container {
+  width: 84%;
+  max-width: 1400px;
+  margin: auto;
+  padding: 55px 0 80px;
+}
+
+.marketplace-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.section-label {
+  color: #a5663f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.marketplace-heading h2 {
+  margin: 7px 0 5px;
+  font-size: 32px;
+  color: #2f241e;
+}
+
+.marketplace-heading p {
+  margin: 0;
+  color: #806f64;
+}
+
+.product-count {
+  color: #8b4513;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* ================= PRODUCT GRID ================= */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+
+/* ================= PRODUCT CARD ================= */
+
+.product-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #eadbce;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(47,36,30,0.06);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(47,36,30,0.12);
+}
+
+
+/* =====================================================
+   IMPORTANT IMAGE CSS
+   ===================================================== */
+
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  overflow: hidden;
+  background: #f5eee8;
+}
+
+
+/* CLOUDINARY / LOCAL IMAGE */
+
+.marketplace-product-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .marketplace-product-image {
+  transform: scale(1.04);
+}
+
+
+/* IMAGE PLACEHOLDER */
+
+.product-image-placeholder,
+.product-image-error {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f5eee8;
+  color: #8b4513;
+}
+
+.product-image-placeholder span,
+.product-image-error span {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.product-image-placeholder small,
+.product-image-error small {
+  font-size: 13px;
+  color: #806f64;
+}
+
+
+/* CATEGORY */
+
+.product-category-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 6px 11px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.94);
+  color: #8b4513;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+
+/* ================= CONTENT ================= */
+
+.product-card-content {
+  padding: 20px;
+}
+
+.product-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.product-card h3 {
+  margin: 0;
+  color: #2f241e;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.product-price {
+  flex-shrink: 0;
+  color: #8b4513;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.product-material {
+  margin-top: 9px;
+  color: #806f64;
+  font-size: 13px;
+}
+
+.product-material span {
+  font-weight: 700;
+  color: #5f5047;
+}
+
+.product-description {
+  margin: 13px 0;
+  color: #6f625a;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 17px;
+}
+
+.product-tag {
+  padding: 5px 9px;
+  border-radius: 15px;
+  background: #f5eee8;
+  color: #8b4513;
+  font-size: 11px;
+}
+
+
+/* ================= VIEW BUTTON ================= */
+
+.view-product-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 14px;
+  border-radius: 7px;
+  background: #8b4513;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.view-product-btn:hover {
+  background: #6f350f;
+}
+
+.view-product-btn span {
+  font-size: 18px;
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty-marketplace {
+  text-align: center;
+  padding: 90px 20px;
+  background: #fff;
+  border: 1px solid #eadbce;
+  border-radius: 14px;
+}
+
+.empty-icon {
+  font-size: 55px;
+  color: #a5663f;
+}
+
+.empty-marketplace h3 {
+  margin: 15px 0 8px;
+  color: #2f241e;
+}
+
+.empty-marketplace p {
+  color: #806f64;
+}
+
+.clear-search-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 11px 20px;
+  border-radius: 7px;
+  background: #8b4513;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .marketplace-hero {
+    padding: 55px 6%;
+  }
+
+  .marketplace-toolbar {
+    padding: 20px 6%;
+  }
+
+  .marketplace-search-form {
+    flex-direction: column;
+  }
+
+  .category-box select,
+  .search-btn {
+    width: 100%;
+  }
+
+  .marketplace-container {
+    width: 88%;
+    padding-top: 40px;
+  }
+
+  .marketplace-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
 
 </style>

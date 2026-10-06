@@ -402,6 +402,55 @@ body {
     }
 }
 
+/* =====================================================
+   HOME HERO
+===================================================== */
+/* =====================================================
+   HERO SECTION
+===================================================== */
+
+.hero {
+    min-height: calc(100vh - 72px);
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(25, 17, 12, 0.22),
+            rgba(25, 17, 12, 0.82)
+        ),
+        url("/images/background img for home.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+
+/* subtle overlay */
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 75% 50%,
+            rgba(243, 196, 157, 0.10),
+            transparent 35%
+        );
+
+    pointer-events: none;
+}
+
+
 
 /* =====================================================
    HERO CONTENT
