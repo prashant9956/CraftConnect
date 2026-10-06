@@ -10,30 +10,59 @@
             Back to Marketplace
         </a>
 
-
         <!-- PRODUCT DETAIL CARD -->
         <div class="product-detail-card">
 
             <!-- ================= IMAGE ================= -->
             <div class="product-detail-image-section">
-<!-- 
-                <% if (product.image) { %>
+
+                <%
+                    let imageUrl = "";
+
+                    if (product.image) {
+                        const image = String(product.image);
+
+                        if (
+                            image.startsWith("http://") ||
+                            image.startsWith("https://")
+                        ) {
+                            // Cloudinary image
+                            imageUrl = image;
+                        } else {
+                            // Old local image
+                            imageUrl = "/uploads/" + image;
+                        }
+                    }
+                %>
+
+                <% if (imageUrl) { %>
 
                     <img
-                        src="/uploads/<%= product.image %>"
+                        src="<%= imageUrl %>"
                         alt="<%= product.productName %>"
                         class="product-detail-image"
+                        loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
                     >
+
+                    <!-- IMAGE ERROR FALLBACK -->
+                    <div
+                        class="product-detail-placeholder"
+                        style="display:none;"
+                    >
+                        <span>✦</span>
+                        <p>Image unavailable</p>
+                    </div>
 
                 <% } else { %>
 
+                    <!-- NO IMAGE -->
                     <div class="product-detail-placeholder">
                         <span>✦</span>
                         <p>Handmade Craft</p>
                     </div>
 
-                <% } %> 
-
+                <% } %>
 
                 <!-- IMAGE LABEL -->
                 <div class="detail-image-label">
@@ -51,18 +80,15 @@
                     <%= product.category %>
                 </span>
 
-
                 <!-- PRODUCT NAME -->
                 <h1>
                     <%= product.productName %>
                 </h1>
 
-
                 <!-- SHORT INTRO -->
                 <p class="detail-intro">
                     A unique handmade creation crafted by a local artisan.
                 </p>
-
 
                 <!-- PRICE -->
                 <div class="detail-price-section">
@@ -88,6 +114,7 @@
                         </div>
 
                         <div>
+
                             <span class="detail-label">
                                 Material
                             </span>
@@ -95,6 +122,7 @@
                             <span class="detail-value">
                                 <%= product.material %>
                             </span>
+
                         </div>
 
                     </div>
@@ -161,9 +189,13 @@
                             type="submit"
                             class="add-cart-btn"
                         >
+
                             <span>🛒</span>
+
                             Add to Cart
+
                             <span class="cart-arrow">→</span>
+
                         </button>
 
                     </form>
@@ -175,27 +207,53 @@
                 <div class="product-trust-grid">
 
                     <div class="trust-item">
+
                         <span>✦</span>
+
                         <div>
+
                             <strong>Handmade</strong>
-                            <small>Unique artisan craft</small>
+
+                            <small>
+                                Unique artisan craft
+                            </small>
+
                         </div>
+
                     </div>
 
+
                     <div class="trust-item">
+
                         <span>🤝</span>
+
                         <div>
+
                             <strong>Support Local</strong>
-                            <small>Direct artisan support</small>
+
+                            <small>
+                                Direct artisan support
+                            </small>
+
                         </div>
+
                     </div>
 
+
                     <div class="trust-item">
+
                         <span>✓</span>
+
                         <div>
+
                             <strong>CraftConnect</strong>
-                            <small>Trusted marketplace</small>
+
+                            <small>
+                                Trusted marketplace
+                            </small>
+
                         </div>
+
                     </div>
 
                 </div>
