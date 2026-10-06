@@ -1,0 +1,350 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span class="success-label">
+            CRAFTCONNECT
+        </span>
+
+        <h1>
+            Order Placed Successfully!
+        </h1>
+
+        <p class="success-message">
+            Thank you for supporting local artisans.
+            Your handmade products are on their way.
+        </p>
+
+
+        <div class="order-info">
+
+            <div>
+                <span>Order ID</span>
+
+                <strong>
+                    #<%= order._id.toString().slice(-8).toUpperCase() %>
+                </strong>
+            </div>
+
+
+            <div>
+                <span>Order Status</span>
+
+                <strong>
+                    <%= order.orderStatus %>
+                </strong>
+            </div>
+
+
+            <div>
+                <span>Payment</span>
+
+                <strong>
+                    <%= order.paymentMethod %>
+                </strong>
+            </div>
+
+
+            <div>
+                <span>Total Amount</span>
+
+                <strong>
+                    ₹<%= Number(order.totalAmount).toLocaleString("en-IN") %>
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="success-actions">
+
+            <a
+                href="/marketplace"
+                class="continue-btn"
+            >
+                Continue Shopping
+            </a>
+
+            <a
+                href="/cart"
+                class="secondary-btn"
+            >
+                Go to Cart
+            </a>
+
+        </div>
+
+
+        <p class="success-note">
+            🔒 Your order details have been securely saved.
+        </p>
+
+    </div>
+
+</div>
+
+
+<style>
+
+.success-page {
+
+    min-height: 70vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px 20px;
+
+    background: #fcfaf8;
+
+}
+
+
+.success-card {
+
+    width: 100%;
+
+    max-width: 650px;
+
+    padding: 45px;
+
+    text-align: center;
+
+    background: #fff;
+
+    border: 1px solid #ead9ca;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 45px rgba(80, 45, 25, .08);
+
+}
+
+
+.success-icon {
+
+    width: 75px;
+
+    height: 75px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #8b4513;
+
+    color: #fff;
+
+    font-size: 38px;
+
+    font-weight: 700;
+
+}
+
+
+.success-label {
+
+    color: #a5663f;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+}
+
+
+.success-card h1 {
+
+    margin: 10px 0;
+
+    color: #713b20;
+
+    font-size: 30px;
+
+}
+
+
+.success-message {
+
+    max-width: 480px;
+
+    margin: 0 auto 30px;
+
+    color: #8a7769;
+
+    line-height: 1.6;
+
+}
+
+
+.order-info {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 25px;
+
+    background: #f8f1eb;
+
+    border-radius: 12px;
+
+}
+
+
+.order-info div {
+
+    padding: 12px;
+
+    text-align: left;
+
+}
+
+
+.order-info span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #927e70;
+
+    font-size: 11px;
+
+}
+
+
+.order-info strong {
+
+    color: #49372c;
+
+    font-size: 14px;
+
+}
+
+
+.success-actions {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+}
+
+
+.continue-btn,
+.secondary-btn {
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+
+}
+
+
+.continue-btn {
+
+    background: #8b4513;
+
+    color: #fff;
+
+}
+
+
+.continue-btn:hover {
+
+    background: #6f350f;
+
+}
+
+
+.secondary-btn {
+
+    border: 1px solid #d9c5b5;
+
+    background: #fff;
+
+    color: #713b20;
+
+}
+
+
+.secondary-btn:hover {
+
+    background: #f5eee8;
+
+}
+
+
+.success-note {
+
+    margin: 22px 0 0;
+
+    color: #9a8779;
+
+    font-size: 11px;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .success-card {
+
+        padding: 30px 20px;
+
+    }
+
+    .success-card h1 {
+
+        font-size: 25px;
+
+    }
+
+    .order-info {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .success-actions {
+
+        flex-direction: column;
+
+    }
+
+}
+
+</style>
