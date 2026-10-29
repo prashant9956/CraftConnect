@@ -1,3 +1,4 @@
+
 const express = require("express");
 const Product = require("../models/product");
 
@@ -43,28 +44,42 @@ router.get("/", async (req, res) => {
             createdAt: -1
         });
 
-     
-res.render("marketplace/index", {
-    products,
-    search: search || "",
-    category: category || "All",
-    title: "Handmade Crafts Marketplace | CraftConnect",
-    description: "Explore unique handmade products, discover beautiful artisan creations, and support local craftsmanship on CraftConnect."
-});
-
+        res.render("marketplace/index", {
+            products,
+            search: search || "",
+            category: category || "All",
+            title: "Handmade Crafts Marketplace | CraftConnect",
+            description:
+                "Explore unique handmade products, discover beautiful artisan creations, and support local craftsmanship on CraftConnect."
+        });
 
     } catch (err) {
         console.log("Marketplace error:", err);
         res.status(500).send("Something went wrong");
     }
 });
+
 // Product detail page
+router.get("/product/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
 
-res.render("marketplace/product-detail", {
-    product,
-    title: `${product.productName} | CraftConnect`,
-    description: `Discover ${product.productName} on CraftConnect, your marketplace for unique handmade products and artisan creations.`
+        const product = await Product.findById(id);
+
+        if (!product) {
+            return res.status(404).send("Product not found");
+        }
+
+        res.render("marketplace/product-detail", {
+            product,
+            title: `${product.productName} | CraftConnect`,
+            description: `Discover ${product.productName} on CraftConnect, your marketplace for unique handmade products and artisan creations.`
+        });
+
+    } catch (err) {
+        console.log("Product detail error:", err);
+        res.status(500).send("Something went wrong");
+    }
 });
-
 
 module.exports = router;
