@@ -43,11 +43,15 @@ router.get("/", async (req, res) => {
             createdAt: -1
         });
 
-        res.render("marketplace/index", {
-            products,
-            search: search || "",
-            category: category || "All"
-        });
+     
+res.render("marketplace/index", {
+    products,
+    search: search || "",
+    category: category || "All",
+    title: "Handmade Crafts Marketplace | CraftConnect",
+    description: "Explore unique handmade products, discover beautiful artisan creations, and support local craftsmanship on CraftConnect."
+});
+
 
     } catch (err) {
         console.log("Marketplace error:", err);
@@ -55,24 +59,12 @@ router.get("/", async (req, res) => {
     }
 });
 // Product detail page
-router.get("/product/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
 
-        const product = await Product.findById(id);
-
-        if (!product) {
-            return res.status(404).send("Product not found");
-        }
-
-        res.render("marketplace/product-detail", {
-            product
-        });
-
-    } catch (err) {
-        console.log("Product detail error:", err);
-        res.status(500).send("Something went wrong");
-    }
+res.render("marketplace/product-detail", {
+    product,
+    title: `${product.productName} | CraftConnect`,
+    description: `Discover ${product.productName} on CraftConnect, your marketplace for unique handmade products and artisan creations.`
 });
+
 
 module.exports = router;
