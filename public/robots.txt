@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://craftconnect-1-wall.onrender.com/sitemap.xml
